@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MusicListItemTheme">
+    
+    <ImageView
+        android:id="@+id/image_album_cover"
+        style="@style/MusicListItemImageViewTheme" />
+    
+    <LinearLayout
+        style="@style/MusicListItemTextViewGroupTheme">
+
+        <TextView
+            android:id="@+id/text_title"
+            style="@style/MusicListItemTextViewTheme"
+            android:text="-" />
+
+        <TextView
+            android:id="@+id/text_artist_album"
+            style="@style/MusicListItemTextViewTheme"
+            android:text="Unknown Artist - Unknown Album" />
+
+    </LinearLayout>
+
+</LinearLayout>

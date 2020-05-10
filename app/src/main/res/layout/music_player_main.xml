@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MusicPlayerTheme"
+    tools:context="com.example.musicplayer.MusicPlayerActivity">
+
+    <ImageView
+        android:id="@+id/image_music_player_album_cover"
+        style="@style/MusicPlayerAlbumCoverTheme" />
+    
+    <LinearLayout
+        android:id="@+id/music_player_info"
+        style="@style/MusicPlayerInfoGroupTheme">
+
+        <TextView
+            android:id="@+id/text_music_player_title"
+            style="@style/MusicPlayerInfoTheme" />
+
+        <TextView
+            android:id="@+id/text_music_player_artist_album"
+            style="@style/MusicPlayerInfoTheme" />
+
+    </LinearLayout>
+
+    <!-- interface (play, pause, backward, forward) -->
+    <LinearLayout
+        style="@style/MusicPlayerInterfaceGroupTheme">
+
+        <ImageView
+            android:id="@+id/image_music_player_backward"
+            style="@style/MusicPlayerInterfaceTheme">
+
+        <ImageView
+            android:id="@+id/image_music_player_play_pause"
+            style="@style/MusicPlayerInterfaceTheme">
+
+        <ImageView
+            android:id="@+id/image_music_player_forward"
+            style="@style/MusicPlayerInterfaceTheme">
+
+        </ImageView>
+
+    </LinearLayout>
+
+</RelativeLayout>

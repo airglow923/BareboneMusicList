@@ -1,0 +1,106 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- Menu theme -->
+    <style name="MenuTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">32dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:background">@color/colorMenu</item>
+    </style>
+
+    <!-- Music list item -->
+    <style name="MusicListItemTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">72dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <!-- Music list item ImageView theme -->
+    <style name="MusicListItemImageViewTheme">
+        <!-- Default album art -->
+        <item name="android:background">@drawable/default_album_cover</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:layout_width">72dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <!-- Music list item TextView group theme -->
+    <style name="MusicListItemTextViewGroupTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/listItem</item>
+    </style>
+
+    <!-- Music list item TextView theme -->
+    <style name="MusicListItemTextViewTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <!-- Music player theme -->
+    <style name="MusicPlayerTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/background</item>
+    </style>
+
+    <!-- Music player album cover theme -->
+    <style name="MusicPlayerAlbumCoverTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:scaleType">fitXY</item>
+    </style>
+
+    <!-- Music player info group theme -->
+    <style name="MusicPlayerInfoGroupTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_below">@id/image_album_cover</item>
+    </style>
+
+    <!-- Music player info theme -->
+    <style name="MusicPlayerInfoTheme">
+
+    </style>
+
+    <!-- Music player interface group theme -->
+    <style name="MusicPlayerInterfaceGroupTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_below">@id/music_player_info</item>
+    </style>
+
+    <!-- Music player interface theme -->
+    <style name="MusicPlayerInterfaceTheme">
+
+    </style>
+
+</resources>
