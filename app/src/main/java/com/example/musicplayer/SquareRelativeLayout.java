@@ -1,7 +1,9 @@
 package com.example.musicplayer;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 public class SquareRelativeLayout extends RelativeLayout {
@@ -20,21 +22,27 @@ public class SquareRelativeLayout extends RelativeLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
+        int widthDesc = MeasureSpec.getMode(widthMeasureSpec);
+        int heightDesc = MeasureSpec.getMode(heightMeasureSpec);
         int size = 0;
 
-        if (width == MeasureSpec.UNSPECIFIED && height == MeasureSpec.UNSPECIFIED) {
+        if (widthDesc == MeasureSpec.UNSPECIFIED && heightDesc == MeasureSpec.UNSPECIFIED) {
             size = getContext().getResources()
                     .getDimensionPixelSize(R.dimen.default_music_player_album_cover_size);
-        } else if (width == MeasureSpec.UNSPECIFIED || height == MeasureSpec.UNSPECIFIED) {
+        } else if (widthDesc == MeasureSpec.UNSPECIFIED || heightDesc == MeasureSpec.UNSPECIFIED) {
             size = width > height ? width : height;
         } else {
             size = width > height ? height : width;
         }
 
-        setMeasuredDimension(size, size);
+        size = MeasureSpec.makeMeasureSpec(size, MeasureSpec.EXACTLY);
+        super.onMeasure(size, size);
+    }
+
+    @Override
+    public void setBackground(Drawable background) {
+        super.setBackground(background);
     }
 }

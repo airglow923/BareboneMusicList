@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class MusicPlayerActivity extends AppCompatActivity {
 
@@ -22,25 +23,15 @@ public class MusicPlayerActivity extends AppCompatActivity {
         String title = getIntent().getStringExtra("title");
         String artist = getIntent().getStringExtra("artist");
         String album = getIntent().getStringExtra("album");
+        String artistAlbum = artist + " - " + album;
         int albumCover = getIntent().getIntExtra("albumCover", 0);
-
-        SquareRelativeLayout infoLayout = findViewById(R.id.square_music_player);
-        LayoutParams infoDimension = (LayoutParams) infoLayout.getLayoutParams();
-
-        Log.i("square dimension", String.valueOf(infoDimension.width)
-                + " " + String.valueOf(infoDimension.height));
 
         TextView titleView = findViewById(R.id.text_music_player_title);
         TextView artistAlbumView = findViewById(R.id.text_music_player_artist_album);
         ImageView albumCoverView = findViewById(R.id.image_music_player_album_cover);
 
-        albumCoverView.setLayoutParams(new RelativeLayout.LayoutParams(infoDimension));
-
-        Log.i("album cover dimension", String.valueOf(albumCoverView.getLayoutParams().width) +
-                " " + String.valueOf(albumCoverView.getLayoutParams().height));
-
         titleView.setText(title);
-        artistAlbumView.setText(artist + " - " + album);
+        artistAlbumView.setText(artistAlbum);
         albumCoverView.setImageResource(albumCover);
     }
 

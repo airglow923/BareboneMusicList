@@ -72,8 +72,8 @@
 
     <!-- Music player info square theme -->
     <style name="MusicPlayerInfoSquareTheme">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">@dimen/default_margin</item>
     </style>
 
@@ -88,9 +88,7 @@
     <style name="MusicPlayerInfoGroupTheme">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">32dp</item>
-        <item name="android:layout_marginRight">@dimen/default_margin</item>
-        <item name="android:layout_marginLeft">@dimen/default_margin</item>
-        <item name="android:layout_marginBottom">@dimen/default_margin</item>
+        <item name="android:layout_margin">@dimen/default_margin</item>
         <item name="android:layout_alignParentBottom">true</item>
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:orientation">vertical</item>
