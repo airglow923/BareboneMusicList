@@ -12,14 +12,8 @@ import java.util.ArrayList;
 
 public class MusicAdapter extends ArrayAdapter<Music> {
 
-    private MusicPlayerActivity musicPlayerActivity;
-
     public MusicAdapter(Context context, ArrayList<Music> musics) {
         super(context, 0, musics);
-    }
-
-    public MusicAdapter(MusicPlayerActivity musicPlayerActivity) {
-        this.musicPlayerActivity = musicPlayerActivity;
     }
 
     @Override
@@ -32,8 +26,6 @@ public class MusicAdapter extends ArrayAdapter<Music> {
         }
 
         Music music = getItem(position);
-        musicPlayerActivity.setMusic(music);
-
         ImageView albumCover = listItemView.findViewById(R.id.image_album_cover);
         albumCover.setImageResource(music.getAlbumCover() == 0
                 ? R.drawable.default_album_cover : music.getAlbumCover());
