@@ -36,10 +36,10 @@
     <!-- Music list item ImageView theme -->
     <style name="MusicListItemImageViewTheme">
         <!-- Default album art -->
-        <item name="android:background">@drawable/default_album_cover</item>
-        <item name="android:scaleType">fitXY</item>
         <item name="android:layout_width">@dimen/default_music_list_album_cover_size</item>
         <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/default_album_cover</item>
+        <item name="android:scaleType">fitXY</item>
     </style>
 
     <!-- Music list item TextView group theme -->
@@ -87,7 +87,7 @@
     <!-- Music player info group theme -->
     <style name="MusicPlayerInfoGroupTheme">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">32dp</item>
         <item name="android:layout_marginRight">@dimen/default_margin</item>
         <item name="android:layout_marginLeft">@dimen/default_margin</item>
         <item name="android:layout_marginBottom">@dimen/default_margin</item>
@@ -103,23 +103,26 @@
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
     <!-- Music player interface group theme -->
     <style name="MusicPlayerInterfaceGroupTheme">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">96dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:layout_margin">32dp</item>
+        <item name="android:gravity">center</item>
         <item name="android:orientation">horizontal</item>
     </style>
 
     <!-- Music player interface theme -->
     <style name="MusicPlayerInterfaceTheme">
         <item name="android:layout_width">96dp</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">96dp</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_margin">16dp</item>
+        <item name="android:layout_margin">@dimen/default_margin</item>
         <item name="android:scaleType">fitXY</item>
     </style>
 

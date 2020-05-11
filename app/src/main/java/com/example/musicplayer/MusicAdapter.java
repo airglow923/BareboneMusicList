@@ -27,8 +27,7 @@ public class MusicAdapter extends ArrayAdapter<Music> {
 
         Music music = getItem(position);
         ImageView albumCover = listItemView.findViewById(R.id.image_album_cover);
-        albumCover.setImageResource(music.getAlbumCover() == 0
-                ? R.drawable.default_album_cover : music.getAlbumCover());
+        albumCover.setImageResource(music.getAlbumCover());
         TextView title = listItemView.findViewById(R.id.text_title);
         title.setText(music.getTitle());
         TextView artistAlbum = listItemView.findViewById(R.id.text_artist_album);

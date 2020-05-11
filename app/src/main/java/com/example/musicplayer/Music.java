@@ -17,6 +17,7 @@ public class Music implements Comparable<Music>{
         this.title = title;
         this.album = album;
         this.artist = artist;
+        this.albumCover = R.drawable.default_album_cover;
     }
 
     public Music(String title, String album, String artist, String albumArtist, String comment,

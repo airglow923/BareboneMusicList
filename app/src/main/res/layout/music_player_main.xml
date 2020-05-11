@@ -6,6 +6,7 @@
     tools:context="com.example.musicplayer.MusicPlayerActivity">
     
     <com.example.musicplayer.SquareRelativeLayout
+        android:id="@+id/square_music_player"
         style="@style/MusicPlayerInfoSquareTheme">
 
         <ImageView
@@ -37,17 +38,20 @@
         <ImageView
             android:id="@+id/image_music_player_backward"
             style="@style/MusicPlayerInterfaceTheme"
-            android:src="@drawable/backward_button" />
+            android:src="@drawable/backward_button"
+            android:onClick="backward" />
 
         <ImageView
             android:id="@+id/image_music_player_play_pause"
             style="@style/MusicPlayerInterfaceTheme"
-            android:src="@drawable/play_button" />
+            android:src="@drawable/play_button"
+            android:onClick="playPause" />
 
         <ImageView
             android:id="@+id/image_music_player_forward"
             style="@style/MusicPlayerInterfaceTheme"
-            android:src="@drawable/forward_button" />
+            android:src="@drawable/forward_button"
+            android:onClick="forward" />
 
     </LinearLayout>
 
