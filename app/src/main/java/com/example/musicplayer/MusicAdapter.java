@@ -19,7 +19,6 @@ public class MusicAdapter extends ArrayAdapter<Music> {
     }
 
     public MusicAdapter(MusicPlayerActivity musicPlayerActivity) {
-        super();
         this.musicPlayerActivity = musicPlayerActivity;
     }
 

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_size">8dp</dimen>
+    <dimen name="default_margin">16dp</dimen>
+    <dimen name="default_music_list_album_cover_size">72dp</dimen>
+    <dimen name="default_music_player_album_cover_size">120dp</dimen>
+</resources>

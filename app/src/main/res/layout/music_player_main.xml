@@ -1,27 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/MusicPlayerTheme"
     tools:context="com.example.musicplayer.MusicPlayerActivity">
-
-    <ImageView
-        android:id="@+id/image_music_player_album_cover"
-        style="@style/MusicPlayerAlbumCoverTheme" />
     
-    <LinearLayout
-        android:id="@+id/music_player_info"
-        style="@style/MusicPlayerInfoGroupTheme">
+    <com.example.musicplayer.SquareRelativeLayout
+        style="@style/MusicPlayerInfoSquareTheme">
 
-        <TextView
-            android:id="@+id/text_music_player_title"
-            style="@style/MusicPlayerInfoTheme" />
+        <ImageView
+            android:id="@+id/image_music_player_album_cover"
+            style="@style/MusicPlayerAlbumCoverTheme" />
 
-        <TextView
-            android:id="@+id/text_music_player_artist_album"
-            style="@style/MusicPlayerInfoTheme" />
+        <LinearLayout
+            android:id="@+id/music_player_info"
+            style="@style/MusicPlayerInfoGroupTheme">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/text_music_player_title"
+                style="@style/MusicPlayerInfoTheme"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/text_music_player_artist_album"
+                style="@style/MusicPlayerInfoTheme"
+                android:text="-" />
+
+        </LinearLayout>
+
+    </com.example.musicplayer.SquareRelativeLayout>
 
     <!-- interface (play, pause, backward, forward) -->
     <LinearLayout
@@ -29,18 +36,16 @@
 
         <ImageView
             android:id="@+id/image_music_player_backward"
-            style="@style/MusicPlayerInterfaceTheme">
+            style="@style/MusicPlayerInterfaceTheme" />
 
         <ImageView
             android:id="@+id/image_music_player_play_pause"
-            style="@style/MusicPlayerInterfaceTheme">
+            style="@style/MusicPlayerInterfaceTheme" />
 
         <ImageView
             android:id="@+id/image_music_player_forward"
-            style="@style/MusicPlayerInterfaceTheme">
-
-        </ImageView>
+            style="@style/MusicPlayerInterfaceTheme" />
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
