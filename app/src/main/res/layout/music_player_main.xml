@@ -36,15 +36,18 @@
 
         <ImageView
             android:id="@+id/image_music_player_backward"
-            style="@style/MusicPlayerInterfaceTheme" />
+            style="@style/MusicPlayerInterfaceTheme"
+            android:src="@drawable/backward_button" />
 
         <ImageView
             android:id="@+id/image_music_player_play_pause"
-            style="@style/MusicPlayerInterfaceTheme" />
+            style="@style/MusicPlayerInterfaceTheme"
+            android:src="@drawable/play_button" />
 
         <ImageView
             android:id="@+id/image_music_player_forward"
-            style="@style/MusicPlayerInterfaceTheme" />
+            style="@style/MusicPlayerInterfaceTheme"
+            android:src="@drawable/forward_button" />
 
     </LinearLayout>
 

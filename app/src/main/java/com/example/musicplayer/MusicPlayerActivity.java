@@ -1,6 +1,5 @@
 package com.example.musicplayer;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,8 +8,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MusicPlayerActivity extends AppCompatActivity {
-
-    private Music music;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,5 +26,17 @@ public class MusicPlayerActivity extends AppCompatActivity {
         titleView.setText(title);
         artistAlbumView.setText(artist + " - " + album);
         albumCoverView.setImageResource(albumCover);
+    }
+
+    public void playPause(View view) {
+        // TODO
+    }
+
+    public void backward(View view) {
+        // TODO
+    }
+
+    public void forward(View view) {
+        // TODO
     }
 }
