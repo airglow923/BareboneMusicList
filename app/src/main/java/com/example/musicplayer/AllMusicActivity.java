@@ -1,13 +1,10 @@
 package com.example.musicplayer;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -18,7 +15,7 @@ public class AllMusicActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_music_main);
 
-        ListView listView = findViewById(R.id.list_all_music);
+        RecyclerView recyclerView = findViewById(R.id.list_all_music);
 
         // example music
         final ArrayList<Music> musics = new ArrayList<>();
@@ -50,17 +47,7 @@ public class AllMusicActivity extends AppCompatActivity {
         musics.add(new Music("You Make Me Feel Brand New", "Power Of Life", "BRADIO"));
         musics.add(new Music("Ride On Time (feat. 谷川正憲)", "Power Of Life", "BRADIO"));
 
-        MusicAdapter itemsAdapter = new MusicAdapter(this, musics);
-        listView.setAdapter(itemsAdapter);
-
-        listView.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent musicIntent = new Intent(AllMusicActivity.this, MusicPlayerActivity.class);
-                musicIntent.putExtra("music", new Music(musics.get(position)));
-                startActivity(musicIntent);
-            }
-        });
+        recyclerView.setAdapter(new MusicAdapter(this, musics));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }

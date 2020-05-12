@@ -1,38 +1,84 @@
 package com.example.musicplayer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class MusicAdapter extends ArrayAdapter<Music> {
+public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> {
 
-    public MusicAdapter(Context context, ArrayList<Music> musics) {
-        super(context, 0, musics);
+    private Context context;
+    private List<Music> musics;
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public List<Music> getMusics() {
+        return musics;
+    }
+
+    public void setMusics(List<Music> musics) {
+        this.musics = musics;
+    }
+
+    public MusicAdapter(Context context, List<Music> musics) {
+        this.context = context;
+        this.musics = musics;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View listItemView = convertView;
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new ViewHolder(LayoutInflater.from(context)
+                .inflate(R.layout.music_list_item, parent, false));
+    }
 
-        if(listItemView == null) {
-            listItemView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.music_list_item, parent, false);
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        final Music music = musics.get(position);
+
+        holder.albumCoverImageView.setImageResource(music.getAlbumCover());
+        holder.titleTextView.setText(music.getTitle());
+        holder.artistAlbumTextView.setText(music.getArtist() + " - " + music.getAlbum());
+        holder.parentView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent musicIntent = new Intent(context, MusicPlayerActivity.class);
+                musicIntent.putExtra("music", music);
+                context.startActivity(musicIntent);
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return musics.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private ImageView albumCoverImageView;
+        private TextView titleTextView;
+        private TextView artistAlbumTextView;
+        private View parentView;
+
+        public ViewHolder(@NonNull View view) {
+            super(view);
+            this.albumCoverImageView = view.findViewById(R.id.image_album_cover);
+            this.titleTextView = view.findViewById(R.id.text_title);
+            this.artistAlbumTextView = view.findViewById(R.id.text_artist_album);
+            this.parentView = view;
         }
-
-        Music music = getItem(position);
-        ImageView albumCover = listItemView.findViewById(R.id.image_album_cover);
-        albumCover.setImageResource(music.getAlbumCover());
-        TextView title = listItemView.findViewById(R.id.text_title);
-        title.setText(music.getTitle());
-        TextView artistAlbum = listItemView.findViewById(R.id.text_artist_album);
-        artistAlbum.setText(music.getArtist() + " - " + music.getAlbum());
-
-        return listItemView;
     }
 }

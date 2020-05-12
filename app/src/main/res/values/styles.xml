@@ -28,8 +28,6 @@
     <style name="MusicListItemTheme">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/default_music_list_album_cover_size</item>
-        <item name="android:layout_marginRight">@dimen/default_margin</item>
-        <item name="android:layout_marginLeft">@dimen/default_margin</item>
         <item name="android:orientation">horizontal</item>
     </style>
 
