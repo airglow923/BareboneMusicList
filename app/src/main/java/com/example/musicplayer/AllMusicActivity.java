@@ -58,10 +58,7 @@ public class AllMusicActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent musicIntent = new Intent(AllMusicActivity.this, MusicPlayerActivity.class);
-                musicIntent.putExtra("title", musics.get(position).getTitle());
-                musicIntent.putExtra("artist", musics.get(position).getArtist());
-                musicIntent.putExtra("album", musics.get(position).getAlbum());
-                musicIntent.putExtra("albumCover", musics.get(position).getAlbumCover());
+                musicIntent.putExtra("music", new Music(musics.get(position)));
                 startActivity(musicIntent);
             }
         });

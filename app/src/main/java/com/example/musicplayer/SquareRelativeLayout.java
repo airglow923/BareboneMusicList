@@ -3,7 +3,6 @@ package com.example.musicplayer;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.RelativeLayout;
 
 public class SquareRelativeLayout extends RelativeLayout {

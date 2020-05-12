@@ -1,6 +1,9 @@
 package com.example.musicplayer;
 
-public class Music implements Comparable<Music>{
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Music implements Comparable<Music>, Parcelable {
     // referenced id3v2 format
     private String title;
     private String album;
@@ -12,6 +15,19 @@ public class Music implements Comparable<Music>{
     private int track;
     private int discNumber;
     private int albumCover;
+
+    public Music(Music other) {
+        this.title = other.title;
+        this.album = other.album;
+        this.artist = other.artist;
+        this.albumArtist = other.albumArtist;
+        this.comment = other.comment;
+        this.genre = other.genre;
+        this.year = other.year;
+        this.track = other.track;
+        this.discNumber = other.discNumber;
+        this.albumCover = other.albumCover;
+    }
 
     public Music(String title, String album, String artist) {
         this.title = title;
@@ -116,4 +132,50 @@ public class Music implements Comparable<Music>{
     public int compareTo(Music other) {
         return this.title.compareTo(other.title);
     }
+
+    @Override
+    public void writeToParcel(Parcel out,int flags) {
+        out.writeString(title);
+        out.writeString(album);
+        out.writeString(artist);
+        out.writeString(albumArtist);
+        out.writeString(comment);
+        out.writeString(genre);
+        out.writeInt(year);
+        out.writeInt(track);
+        out.writeInt(discNumber);
+        out.writeInt(albumCover);
+    }
+
+    private Music(Parcel in) {
+        title = in.readString();
+        album = in.readString();
+        artist = in.readString();
+        albumArtist = in.readString();
+        comment = in.readString();
+        genre = in.readString();
+        year = in.readInt();
+        track = in.readInt();
+        discNumber = in.readInt();
+        albumCover = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Parcelable.Creator<Music> CREATOR
+            = new Parcelable.Creator<Music>() {
+
+        @Override
+        public Music createFromParcel(Parcel in) {
+            return new Music(in);
+        }
+
+        @Override
+        public Music[] newArray(int size) {
+            return new Music[size];
+        }
+    };
 }
