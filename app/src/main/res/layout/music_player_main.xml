@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/MusicPlayerTheme"
     tools:context="com.example.musicplayer.MusicPlayerActivity">
@@ -38,19 +38,19 @@
         <ImageView
             android:id="@+id/image_music_player_backward"
             style="@style/MusicPlayerInterfaceTheme"
-            android:src="@drawable/backward_button"
+            app:srcCompat="@drawable/previous_button"
             android:onClick="backward" />
 
         <ImageView
             android:id="@+id/image_music_player_play_pause"
             style="@style/MusicPlayerInterfaceTheme"
-            android:src="@drawable/play_button"
+            app:srcCompat="@drawable/play_button"
             android:onClick="playPause" />
 
         <ImageView
             android:id="@+id/image_music_player_forward"
             style="@style/MusicPlayerInterfaceTheme"
-            android:src="@drawable/forward_button"
+            app:srcCompat="@drawable/next_button"
             android:onClick="forward" />
 
     </LinearLayout>

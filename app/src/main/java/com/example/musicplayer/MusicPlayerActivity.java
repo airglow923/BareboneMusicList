@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MusicPlayerActivity extends AppCompatActivity {
 
+    private boolean isPlayed = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +29,15 @@ public class MusicPlayerActivity extends AppCompatActivity {
     }
 
     public void playPause(View view) {
-        // TODO
+        ImageView imageView = findViewById(R.id.image_music_player_play_pause);
+
+        if (isPlayed) {
+            imageView.setImageResource(R.drawable.pause_button);
+        } else {
+            imageView.setImageResource(R.drawable.play_button);
+        }
+
+        isPlayed = !isPlayed;
     }
 
     public void backward(View view) {

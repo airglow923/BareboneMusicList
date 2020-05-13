@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#BDBDBD</color>
-    <color name="colorPrimaryDark">#9E9E9E</color>
-    <color name="colorAccent">#CFD8DC</color>
+
+    <color name="colorPrimaryDark">#FFC800</color>
+    <color name="colorPrimary">#FFD600</color>
+    <color name="colorAccent">#6A1B9A</color>
 
     <!-- Custom colors -->
-    <color name="background">#424242</color>
-    <color name="colorMenu">#616161</color>
+    <color name="background">#BDBDBD</color>
+    <color name="colorMenu">#757575</color>
     <color name="listItem">#757575</color>
 
 </resources>

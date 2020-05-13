@@ -16,6 +16,8 @@ public class Music implements Comparable<Music>, Parcelable {
     private int discNumber;
     private int albumCover;
 
+    public Music() {}
+
     public Music(Music other) {
         this.title = other.title;
         this.album = other.album;
