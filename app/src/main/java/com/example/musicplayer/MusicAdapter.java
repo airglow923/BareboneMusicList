@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.content.res.Resources;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,7 +49,14 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Music music = musics.get(position);
 
-        holder.albumCoverImageView.setImageResource(music.getAlbumCover());
+//        if (!music.getAlbumCoverDir().isEmpty()) {
+//            holder.albumCoverImageView.setImageResource(context.getResources().getIdentifier(
+//                    stem(music.getAlbumCoverDir()), "drawable", context.getPackageName()));
+//        } else {
+//            holder.albumCoverImageView.setImageResource(R.drawable.default_album_cover);
+//        }
+
+        holder.albumCoverImageView.setImageResource(R.drawable.default_album_cover);
         holder.titleTextView.setText(music.getTitle());
         holder.artistAlbumTextView.setText(music.getArtist() + " - " + music.getAlbum());
         holder.parentView.setOnClickListener(new View.OnClickListener() {
@@ -85,5 +93,9 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> 
             this.artistAlbumTextView = view.findViewById(R.id.text_artist_album);
             this.parentView = view;
         }
+    }
+
+    private static String stem(String filename) {
+        return filename.substring(0, filename.lastIndexOf('.'));
     }
 }

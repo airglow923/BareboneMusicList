@@ -1,9 +1,28 @@
 package com.example.musicplayer;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
+import com.mpatric.mp3agic.ID3v1;
+import com.mpatric.mp3agic.ID3v1Genres;
+import com.mpatric.mp3agic.ID3v2;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.Mp3File;
+import com.mpatric.mp3agic.UnsupportedTagException;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.FileNotFoundException;
 
 public class Music implements Comparable<Music>, Parcelable {
+
+    private static final File DRAWABLE_DIR = new File("../../../../res/drawable");
+
     // referenced id3v2 format
     private String title;
     private String album;
@@ -11,43 +30,81 @@ public class Music implements Comparable<Music>, Parcelable {
     private String albumArtist;
     private String comment;
     private String genre;
-    private int year;
-    private int track;
-    private int discNumber;
-    private int albumCover;
+    private String year;
+    private String track;
+    private byte[] albumCover = new byte[0];
+    private String albumCoverDir;
 
     public Music() {}
 
     public Music(Music other) {
-        this.title = other.title;
-        this.album = other.album;
-        this.artist = other.artist;
-        this.albumArtist = other.albumArtist;
-        this.comment = other.comment;
-        this.genre = other.genre;
-        this.year = other.year;
-        this.track = other.track;
-        this.discNumber = other.discNumber;
-        this.albumCover = other.albumCover;
+        title = other.title;
+        album = other.album;
+        artist = other.artist;
+        albumArtist = other.albumArtist;
+        comment = other.comment;
+        genre = other.genre;
+        year = other.year;
+        track = other.track;
+        albumCover = other.albumCover;
+        albumCoverDir = other.albumCoverDir;
     }
 
     public Music(String title, String album, String artist) {
         this.title = title;
         this.album = album;
         this.artist = artist;
-        this.albumCover = R.drawable.default_album_cover;
     }
 
     public Music(String title, String album, String artist, String albumArtist, String comment,
-        String genre, int year, int track, int discNumber, int albumCover) {
+        String genre, String year, String track, byte[] albumCover, String albumCoverDir) {
         this(title, album, artist);
         this.albumArtist = albumArtist;
         this.comment = comment;
         this.genre = genre;
         this.year = year;
         this.track = track;
-        this.discNumber = discNumber;
         this.albumCover = albumCover;
+        this.albumCoverDir = albumCoverDir;
+    }
+
+    public Music(File dir) {
+        Mp3File mp3File = null;
+
+        try {
+            mp3File = new Mp3File(dir);
+        } catch (IOException | UnsupportedTagException | InvalidDataException e) {
+            System.out.println(e.getMessage());
+        }
+
+        if (mp3File.hasId3v1Tag()) {
+            ID3v1 id3v1 = mp3File.getId3v1Tag();
+
+            title = id3v1.getTitle();
+            album = id3v1.getAlbum();
+            artist = id3v1.getArtist();
+            comment = id3v1.getComment();
+            genre = ID3v1Genres.GENRES[id3v1.getGenre()];
+            year = id3v1.getYear();
+            track = id3v1.getTrack();
+        } else if (mp3File.hasId3v2Tag()) {
+            ID3v2 id3v2 = mp3File.getId3v2Tag();
+
+            title = id3v2.getTitle();
+            album = id3v2.getAlbum();
+            artist = id3v2.getArtist();
+            albumArtist = id3v2.getAlbumArtist();
+            comment = id3v2.getComment();
+            genre = ID3v1Genres.GENRES[id3v2.getGenre()];
+            year = id3v2.getYear();
+            track = id3v2.getTrack();
+            albumCover = id3v2.getAlbumImage();
+            albumCoverDir = saveImage(albumCover, DRAWABLE_DIR);
+        }
+    }
+
+    public Music(String filename) {
+        this(new File(filename));
     }
 
     public String getTitle() {
@@ -98,36 +155,73 @@ public class Music implements Comparable<Music>, Parcelable {
         this.genre = genre;
     }
 
-    public int getYear() {
+    public String getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(String year) {
         this.year = year;
     }
 
-    public int getTrack() {
+    public String getTrack() {
         return track;
     }
 
-    public void setTrack(int track) {
+    public void setTrack(String track) {
         this.track = track;
     }
 
-    public int getDiscNumber() {
-        return discNumber;
-    }
-
-    public void setDiscNumber(int discNumber) {
-        this.discNumber = discNumber;
-    }
-
-    public int getAlbumCover() {
+    public byte[] getAlbumCover() {
         return albumCover;
     }
 
-    public void setAlbumCover(int albumCover) {
+    public void setAlbumCover(byte[] albumCover) {
         this.albumCover = albumCover;
+    }
+
+    public String getAlbumCoverDir() {
+        return albumCoverDir;
+    }
+
+    public void setAlbumCoverDir(String albumCoverDir) {
+        this.albumCoverDir = albumCoverDir;
+    }
+
+    private static byte[] bmpToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
+    }
+
+    private static Bitmap byteArrayToBmp(byte[] data) {
+        return BitmapFactory.decodeByteArray(data, 0, data.length);
+    }
+
+    private static String saveImage(byte[] data, File dir) {
+//        File file = null;
+//        FileOutputStream fos = null;
+//
+//        if (data.length != 0 || !file.exists()) {
+//            file = new File(dir, data.hashCode() + ".png");
+//            try {
+//                fos = new FileOutputStream(file);
+//                byteArrayToBmp(data).compress(Bitmap.CompressFormat.PNG, 100, fos);
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            } finally {
+//                try {
+//                    fos.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        } else {
+//            file = new File("");
+//        }
+//
+//        return file.getPath();
+        File file = new File("");
+        return file.getPath();
     }
 
     @Override
@@ -136,17 +230,18 @@ public class Music implements Comparable<Music>, Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel out,int flags) {
+    public void writeToParcel(Parcel out, int flags) {
         out.writeString(title);
         out.writeString(album);
         out.writeString(artist);
         out.writeString(albumArtist);
         out.writeString(comment);
         out.writeString(genre);
-        out.writeInt(year);
-        out.writeInt(track);
-        out.writeInt(discNumber);
-        out.writeInt(albumCover);
+        out.writeString(year);
+        out.writeString(track);
+        out.writeInt(albumCover.length);
+        out.writeByteArray(albumCover);
+        out.writeString(albumCoverDir);
     }
 
     private Music(Parcel in) {
@@ -156,10 +251,11 @@ public class Music implements Comparable<Music>, Parcelable {
         albumArtist = in.readString();
         comment = in.readString();
         genre = in.readString();
-        year = in.readInt();
-        track = in.readInt();
-        discNumber = in.readInt();
-        albumCover = in.readInt();
+        year = in.readString();
+        track = in.readString();
+        albumCover = new byte[in.readInt()];
+        in.readByteArray(albumCover);
+        albumCoverDir = in.readString();
     }
 
     @Override

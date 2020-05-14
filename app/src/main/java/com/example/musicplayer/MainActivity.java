@@ -3,9 +3,13 @@ package com.example.musicplayer;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
+
+import java.io.File;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,5 +50,21 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(playlistIntent);
             }
         });
+
+        logDirectory();
+    }
+
+    private void logDirectory() {
+        File file = new File("").getAbsoluteFile();
+        try {
+            file.createNewFile();
+            File[] files = file.getParentFile().listFiles();
+            for (File inFile : files) {
+                Log.i("File directory: ", inFile.getAbsolutePath());
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        Log.i("Finished printing", "asdfasdfasd");
     }
 }
