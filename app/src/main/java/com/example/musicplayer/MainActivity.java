@@ -112,20 +112,16 @@ public class MainActivity extends AppCompatActivity {
         // note that internal storage has been altered when /sdcard has been altered
         File file = new File(Environment.getExternalStorageDirectory().getPath() + "/emulatordesu.txt");
         Log.i("Path of external dir:", file.getAbsolutePath());
-        if (androidCreateFile(file)) {
-            try {
-                File[] files = file.getParentFile().listFiles();
-                if (files == null) {
-                    throw new IOException();
-                }
-                for (File inFile : files) {
-                    Log.i("File directory: ", inFile.getAbsolutePath());
-                }
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
+        try {
+            File[] files = file.getParentFile().listFiles();
+            if (files == null) {
+                throw new IOException();
             }
-        } else {
-            Log.i("mkdir(): ", "Failed to create a directory");
+            for (File inFile : files) {
+                Log.i("File directory: ", inFile.getAbsolutePath());
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
         Log.i("Finished printing", "text placeholder");
     }
