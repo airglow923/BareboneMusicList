@@ -17,8 +17,15 @@ import android.view.View;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
+import org.javatuples.Triplet;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,13 +39,24 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
+    private static List<Triplet<String, String, Integer>> permissionRationale = Arrays.asList(
+            Triplet.with(
+                    PERMISSIONS[0]
+                    , "In order to read and play music, you need to allow access to file."
+                    , PERMISSION_READ_EXTERNAL_STORAGE),
+            Triplet.with(
+                    PERMISSIONS[1]
+                    , "In order to update and delete music, you need to allow access to file."
+                    , PERMISSION_WRITE_EXTERNAL_STORAGE)
+            );
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         if (!hasPermissions(this, PERMISSIONS)) {
-            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+            processPermission(permissionRationale);
         }
 
         TextView allMusic = findViewById(R.id.text_all_music);
@@ -78,37 +96,9 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case PERMISSION_READ_EXTERNAL_STORAGE:
-                if (!hasPermissions(this, PERMISSIONS[0])) {
-                    if (!shouldShowRequestPermissionRationale(PERMISSIONS[0])) {
-                        showMessageOkCancel("In order to update and play music, you need"
-                                + "allow access to file.", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                requestPermissions(new String[]{PERMISSIONS[0]}
-                                , PERMISSION_READ_EXTERNAL_STORAGE);
-                            }
-                        });
-                    }
-                }
-                break;
-            case PERMISSION_WRITE_EXTERNAL_STORAGE:
-                if (!hasPermissions(this, PERMISSIONS[1])) {
-                    if (!shouldShowRequestPermissionRationale(PERMISSIONS[1])) {
-                        showMessageOkCancel("In order to update and play music, you need"
-                                + "allow access to file.", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                requestPermissions(new String[]{PERMISSIONS[1]}
-                                        , PERMISSION_WRITE_EXTERNAL_STORAGE);
-                            }
-                        });
-                    }
-                }
-                break;
             case PERMISSION_ALL:
-                if (!grantedPermissions(grantResults)) {
-                    hasPermissions(this, permissions);
+                if (grantedPermissions(grantResults)) {
+                    ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
                 }
                 break;
             default:
@@ -129,12 +119,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static boolean grantedPermissions(int... results) {
-        for (int result : results) {
-            if(result != PackageManager.PERMISSION_GRANTED) {
-                return false;
+        if (results != null) {
+            for (int result : results) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
             }
         }
         return true;
+    }
+
+    private void processPermission(@NonNull List<Triplet<String, String, Integer>> permissionList) {
+        for (Triplet<String, String, Integer> permission : permissionList) {
+            final String permissionName = permission.getValue0();
+            final String permissionRationale = permission.getValue1();
+            final int permissionCode = permission.getValue2();
+            if (!shouldShowRequestPermissionRationale(permissionName)) {
+                showMessageOkCancel(permission.getValue1(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        requestPermissions(new String[]{permissionRationale}, permissionCode);
+                    }
+                });
+            }
+        }
     }
 
     private void showMessageOkCancel(String message, DialogInterface.OnClickListener listener) {
@@ -144,16 +152,6 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("OK", listener)
                 .create()
                 .show();
-    }
-
-    private String[] stringToStringArray(String... strings) {
-        String[] collection = new String[strings.length];
-
-        for (int i = 0; i < strings.length; ++i) {
-            collection[i] = strings[i];
-        }
-
-        return collection;
     }
 
     private void logDirectory() {
