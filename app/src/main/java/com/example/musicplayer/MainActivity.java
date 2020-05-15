@@ -1,11 +1,13 @@
 package com.example.musicplayer;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -20,7 +22,10 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int PERMISSION_ALL = 1111;
+    private static final int PERMISSION_WRITE_EXTERNAL_STORAGE = 2;
+    private static final int PERMISSION_READ_EXTERNAL_STORAGE = 4;
+    private static final int PERMISSION_ALL =
+            PERMISSION_READ_EXTERNAL_STORAGE | PERMISSION_WRITE_EXTERNAL_STORAGE;
 
     private static final String[] PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -39,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         TextView allMusic = findViewById(R.id.text_all_music);
 
         allMusic.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 Intent allMusicIntent = new Intent(MainActivity.this, AllMusicActivity.class);
@@ -50,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         TextView album = findViewById(R.id.text_album);
 
         album.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 Intent albumIntent = new Intent(MainActivity.this, AlbumActivity.class);
@@ -61,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         TextView playlist = findViewById(R.id.text_playlist);
 
         playlist.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 Intent playlistIntent = new Intent(MainActivity.this, PlaylistActivity.class);
@@ -73,8 +75,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
+            case PERMISSION_READ_EXTERNAL_STORAGE:
+                if (!hasPermissions(this, PERMISSIONS[0])) {
+                    if (!shouldShowRequestPermissionRationale(PERMISSIONS[0])) {
+                        showMessageOkCancel("In order to update and play music, you need"
+                                + "allow access to file.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                requestPermissions(new String[]{PERMISSIONS[0]}
+                                , PERMISSION_READ_EXTERNAL_STORAGE);
+                            }
+                        });
+                    }
+                }
+                break;
+            case PERMISSION_WRITE_EXTERNAL_STORAGE:
+                if (!hasPermissions(this, PERMISSIONS[1])) {
+                    if (!shouldShowRequestPermissionRationale(PERMISSIONS[1])) {
+                        showMessageOkCancel("In order to update and play music, you need"
+                                + "allow access to file.", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                requestPermissions(new String[]{PERMISSIONS[1]}
+                                        , PERMISSION_WRITE_EXTERNAL_STORAGE);
+                            }
+                        });
+                    }
+                }
+                break;
             case PERMISSION_ALL:
                 if (!grantedPermissions(grantResults)) {
                     hasPermissions(this, permissions);
@@ -106,11 +137,31 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private void showMessageOkCancel(String message, DialogInterface.OnClickListener listener) {
+        new AlertDialog.Builder(MainActivity.this)
+                .setMessage(message)
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("OK", listener)
+                .create()
+                .show();
+    }
+
+    private String[] stringToStringArray(String... strings) {
+        String[] collection = new String[strings.length];
+
+        for (int i = 0; i < strings.length; ++i) {
+            collection[i] = strings[i];
+        }
+
+        return collection;
+    }
+
     private void logDirectory() {
         // Environment.getExternalStorageDirectory() returns /storage/emulated/0
         // which seems /sdcard/
         // note that internal storage has been altered when /sdcard has been altered
-        File file = new File(Environment.getExternalStorageDirectory().getPath() + "/emulatordesu.txt");
+        File file = new File(Environment.getExternalStorageDirectory().getPath()
+                + "/emulatordesu.txt");
         Log.i("Path of external dir:", file.getAbsolutePath());
         try {
             File[] files = file.getParentFile().listFiles();
