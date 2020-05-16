@@ -50,7 +50,7 @@
         <!-- Default album art -->
         <item name="android:layout_width">@dimen/default_music_list_album_cover_size</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@drawable/default_album_cover</item>
+        <item name="android:src">@drawable/default_album_cover</item>
         <item name="android:scaleType">fitXY</item>
     </style>
 
@@ -95,6 +95,7 @@
     <style name="MusicPlayerAlbumCoverTheme">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
+        <item name="android:src">@drawable/default_album_cover</item>
         <item name="android:scaleType">fitXY</item>
     </style>
 

@@ -53,7 +53,12 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> 
 
         String artistAlbum = music.getArtist() + " - " + music.getAlbum();
 
-        holder.albumCoverImageView.setImageBitmap(byteArrayToBmp(music.getAlbumCover()));
+        if (music.getAlbumCover().length == 0) {
+            holder.albumCoverImageView.setImageResource(R.drawable.default_album_cover);
+        } else {
+            holder.albumCoverImageView.setImageBitmap(byteArrayToBmp(music.getAlbumCover()));
+        }
+
         holder.titleTextView.setText(music.getTitle());
         holder.artistAlbumTextView.setText(artistAlbum);
         holder.parentView.setOnClickListener(new View.OnClickListener() {

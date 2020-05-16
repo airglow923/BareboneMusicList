@@ -30,7 +30,12 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         titleView.setText(music.getTitle());
         artistAlbumView.setText(artistAlbum);
-        albumCoverView.setImageBitmap(byteArrayToBmp(music.getAlbumCover()));
+
+        if (music.getAlbumCover().length == 0) {
+            albumCoverView.setImageResource(R.drawable.default_album_cover);
+        } else {
+            albumCoverView.setImageBitmap(byteArrayToBmp(music.getAlbumCover()));
+        }
     }
 
     public void playPause(View view) {
