@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Context;
@@ -22,10 +23,7 @@ import org.javatuples.Triplet;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -88,8 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(playlistIntent);
             }
         });
-
-        logDirectory();
     }
 
     @Override
@@ -109,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
     private static boolean hasPermissions(Context context, String... permissions) {
         if (context != null && permissions != null) {
             for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission)
+                if (ContextCompat.checkSelfPermission(context, permission)
                         != PackageManager.PERMISSION_GRANTED) {
                     return false;
                 }
@@ -134,11 +130,14 @@ public class MainActivity extends AppCompatActivity {
             final String permissionName = permission.getValue0();
             final String permissionRationale = permission.getValue1();
             final int permissionCode = permission.getValue2();
-            if (!shouldShowRequestPermissionRationale(permissionName)) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissionName)) {
                 showMessageOkCancel(permission.getValue1(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        requestPermissions(new String[]{permissionRationale}, permissionCode);
+                        ActivityCompat.requestPermissions(
+                                MainActivity.this
+                                , new String[]{permissionRationale}
+                                , permissionCode);
                     }
                 });
             }

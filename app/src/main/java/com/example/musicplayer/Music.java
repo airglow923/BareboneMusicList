@@ -2,6 +2,8 @@ package com.example.musicplayer;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaMetadata;
+import android.media.MediaMetadataRetriever;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -20,8 +22,6 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 
 public class Music implements Comparable<Music>, Parcelable {
-
-    private static final File DRAWABLE_DIR = new File("../../../../res/drawable");
 
     // referenced id3v2 format
     private String title;
@@ -66,6 +66,20 @@ public class Music implements Comparable<Music>, Parcelable {
         this.track = track;
         this.albumCover = albumCover;
         this.albumCoverDir = albumCoverDir;
+    }
+
+    public Music(File file, Integer placeholder) {
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(file.getPath());
+
+        try {
+            String hasAudio = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_AUDIO);
+            if (hasAudio == null) {
+                throw new NotAudioException("Metadata does not contain audio information.");
+            }
+        } catch (NotAudioException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public Music(File dir) {
