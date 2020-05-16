@@ -1,13 +1,8 @@
 package com.example.musicplayer;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -17,11 +12,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
-import org.javatuples.Triplet;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import static com.example.musicplayer.PermissionControl.*;
 
@@ -32,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        processMultiplePermission(PERMISSION_RATIONALE);
+        processMultiplePermission(this, PERMISSION_RATIONALE);
 
         TextView allMusic = findViewById(R.id.text_all_music);
 
@@ -84,56 +76,6 @@ public class MainActivity extends AppCompatActivity {
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-    }
-
-    private static boolean hasPermissions(Context context, String... permissions) {
-        if (context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ContextCompat.checkSelfPermission(context, permission)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private void processMultiplePermission(
-            @NonNull List<Triplet<String, String, Integer>> permissions) {
-        for (Triplet<String, String, Integer> permission : permissions) {
-            final String name = permission.getValue0();
-            final String rationale = permission.getValue1();
-            final int requestCode = permission.getValue2();
-
-            if (!hasPermissions(this, name)) {
-                processPermission(name, rationale, requestCode);
-            }
-        }
-    }
-
-    private void processPermission(final String permissionName, String permissionRationale
-            , final int requestCode) {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissionName)) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{permissionRationale}
-                    , requestCode);
-        } else {
-            showMessageOkCancel(permissionRationale, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ActivityCompat.requestPermissions(MainActivity.this
-                            , new String[]{permissionName}, requestCode);
-                }
-            });
-        }
-    }
-
-    private void showMessageOkCancel(String message, DialogInterface.OnClickListener listener) {
-        new AlertDialog.Builder(MainActivity.this)
-                .setMessage(message)
-                .setNegativeButton("Cancel", null)
-                .setPositiveButton("OK", listener)
-                .create()
-                .show();
     }
 
     private void logDirectory() {
