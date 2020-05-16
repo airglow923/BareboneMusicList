@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
-    private static List<Triplet<String, String, Integer>> permissionRationale = Arrays.asList(
+    private static List<Triplet<String, String, Integer>> permissionRationales = Arrays.asList(
             Triplet.with(
                     PERMISSIONS[0]
                     , "In order to read and play music, you need to allow access to file."
@@ -53,9 +53,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (!hasPermissions(this, PERMISSIONS)) {
-            processPermission(permissionRationale);
-        }
+        processMultiplePermission(permissionRationales);
 
         TextView allMusic = findViewById(R.id.text_all_music);
 
@@ -92,10 +90,17 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
+            case PERMISSION_READ_EXTERNAL_STORAGE:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {}
+                break;
+            case PERMISSION_WRITE_EXTERNAL_STORAGE:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {}
+                break;
             case PERMISSION_ALL:
-                if (grantedPermissions(grantResults)) {
-                    ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
-                }
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {}
                 break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -114,33 +119,32 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private static boolean grantedPermissions(int... results) {
-        if (results != null) {
-            for (int result : results) {
-                if (result != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
+    private void processMultiplePermission(
+            @NonNull List<Triplet<String, String, Integer>> permissions) {
+        for (Triplet<String, String, Integer> permission : permissions) {
+            final String name = permission.getValue0();
+            final String rationale = permission.getValue1();
+            final int requestCode = permission.getValue2();
+
+            if (!hasPermissions(this, name)) {
+                processPermission(name, rationale, requestCode);
             }
         }
-        return true;
     }
 
-    private void processPermission(@NonNull List<Triplet<String, String, Integer>> permissionList) {
-        for (Triplet<String, String, Integer> permission : permissionList) {
-            final String permissionName = permission.getValue0();
-            final String permissionRationale = permission.getValue1();
-            final int permissionCode = permission.getValue2();
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissionName)) {
-                showMessageOkCancel(permission.getValue1(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions(
-                                MainActivity.this
-                                , new String[]{permissionRationale}
-                                , permissionCode);
-                    }
-                });
-            }
+    private void processPermission(final String permissionName, String permissionRationale
+            , final int requestCode) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissionName)) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{permissionRationale}
+                    , requestCode);
+        } else {
+            showMessageOkCancel(permissionRationale, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ActivityCompat.requestPermissions(MainActivity.this
+                            , new String[]{permissionName}, requestCode);
+                }
+            });
         }
     }
 
@@ -172,17 +176,5 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(e.getMessage());
         }
         Log.i("Finished printing", "text placeholder");
-    }
-
-    private boolean androidCreateFile(File file) {
-        boolean result = false;
-
-        try {
-            result = file.createNewFile();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
-        return result;
     }
 }
