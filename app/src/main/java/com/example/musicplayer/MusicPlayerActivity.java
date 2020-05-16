@@ -1,13 +1,16 @@
 package com.example.musicplayer;
 
-import android.content.res.Resources;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.media.MediaPlayer;
 
-import androidx.appcompat.app.AppCompatActivity;
+import java.io.ByteArrayOutputStream;
 
 public class MusicPlayerActivity extends AppCompatActivity {
 
@@ -27,18 +30,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         titleView.setText(music.getTitle());
         artistAlbumView.setText(artistAlbum);
-        albumCoverView.setImageResource(R.drawable.default_album_cover);
-
-//        if (!music.getAlbumCoverDir().isEmpty()) {
-//            albumCoverView.setImageResource(getResources().getIdentifier(
-//                    stem(music.getAlbumCoverDir()), "drawable", this.getPackageName()));
-//        } else {
-//            albumCoverView.setImageResource(R.drawable.default_album_cover);
-//        }
-
-//        mediaPlayer = MediaPlayer.create(this, );
-//        getResources().getIdentifier(music.getTitle(), "res", getPackageName());
-//        getResources().openRawResource()
+        albumCoverView.setImageBitmap(byteArrayToBmp(music.getAlbumCover()));
     }
 
     public void playPause(View view) {
@@ -63,5 +55,15 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private static String stem(String filename) {
         return filename.substring(0, filename.lastIndexOf('.'));
+    }
+
+    private static byte[] bmpToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
+    }
+
+    private static Bitmap byteArrayToBmp(byte[] data) {
+        return BitmapFactory.decodeByteArray(data, 0, data.length);
     }
 }

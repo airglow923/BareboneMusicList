@@ -1,12 +1,9 @@
 package com.example.musicplayer;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 public class Music implements Comparable<Music>, Parcelable {
@@ -139,43 +136,6 @@ public class Music implements Comparable<Music>, Parcelable {
 
     public void setAlbumCover(byte[] albumCover) {
         this.albumCover = albumCover;
-    }
-
-    private static byte[] bmpToByteArray(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        return stream.toByteArray();
-    }
-
-    private static Bitmap byteArrayToBmp(byte[] data) {
-        return BitmapFactory.decodeByteArray(data, 0, data.length);
-    }
-
-    private static String saveImage(byte[] data, File dir) {
-//        File file = null;
-//        FileOutputStream fos = null;
-//
-//        if (data.length != 0 || !file.exists()) {
-//            file = new File(dir, data.hashCode() + ".png");
-//            try {
-//                fos = new FileOutputStream(file);
-//                byteArrayToBmp(data).compress(Bitmap.CompressFormat.PNG, 100, fos);
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            } finally {
-//                try {
-//                    fos.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        } else {
-//            file = new File("");
-//        }
-//
-//        return file.getPath();
-        File file = new File("");
-        return file.getPath();
     }
 
     @Override

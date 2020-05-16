@@ -1,21 +1,14 @@
 package com.example.musicplayer;
 
-import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mpatric.mp3agic.Mp3File;
+import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.Files;
 
 public class AllMusicActivity extends AppCompatActivity {
-
-    private static final File MUSIC_DIR = new File("../../../../res/raw");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

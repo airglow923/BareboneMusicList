@@ -1,15 +1,17 @@
 package com.example.musicplayer;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.content.res.Resources;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -49,16 +51,11 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Music music = musics.get(position);
 
-//        if (!music.getAlbumCoverDir().isEmpty()) {
-//            holder.albumCoverImageView.setImageResource(context.getResources().getIdentifier(
-//                    stem(music.getAlbumCoverDir()), "drawable", context.getPackageName()));
-//        } else {
-//            holder.albumCoverImageView.setImageResource(R.drawable.default_album_cover);
-//        }
+        String artistAlbum = music.getArtist() + " - " + music.getAlbum();
 
-        holder.albumCoverImageView.setImageResource(R.drawable.default_album_cover);
+        holder.albumCoverImageView.setImageBitmap(byteArrayToBmp(music.getAlbumCover()));
         holder.titleTextView.setText(music.getTitle());
-        holder.artistAlbumTextView.setText(music.getArtist() + " - " + music.getAlbum());
+        holder.artistAlbumTextView.setText(artistAlbum);
         holder.parentView.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -97,5 +94,9 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> 
 
     private static String stem(String filename) {
         return filename.substring(0, filename.lastIndexOf('.'));
+    }
+
+    private static Bitmap byteArrayToBmp(byte[] data) {
+        return BitmapFactory.decodeByteArray(data, 0, data.length);
     }
 }
