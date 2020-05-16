@@ -16,18 +16,19 @@ import org.javatuples.Triplet;
 import java.util.Arrays;
 import java.util.List;
 
-public class PermissionControl {
-    public static final int PERMISSION_WRITE_EXTERNAL_STORAGE = 2;
-    public static final int PERMISSION_READ_EXTERNAL_STORAGE = 4;
-    public static final int PERMISSION_ALL =
+class PermissionControl {
+
+    static final int PERMISSION_WRITE_EXTERNAL_STORAGE = 2;
+    static final int PERMISSION_READ_EXTERNAL_STORAGE = 4;
+    static final int PERMISSION_ALL =
             PERMISSION_READ_EXTERNAL_STORAGE | PERMISSION_WRITE_EXTERNAL_STORAGE;
 
-    public static final String[] PERMISSIONS = {
+    static final String[] PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
-    public static final List<Triplet<String, String, Integer>> PERMISSION_RATIONALE =
+    static final List<Triplet<String, String, Integer>> PERMISSION_RATIONALE =
             Arrays.asList(
                     Triplet.with(
                             PERMISSIONS[0]
@@ -39,19 +40,7 @@ public class PermissionControl {
                             , PERMISSION_WRITE_EXTERNAL_STORAGE)
             );
 
-    public static boolean hasPermissions(Context context, String... permissions) {
-        if (context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ContextCompat.checkSelfPermission(context, permission)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    public static void processMultiplePermission(@NonNull final Activity activity
+    static void processMultiplePermission(@NonNull final Activity activity
             , @NonNull final List<Triplet<String, String, Integer>> permissions) {
         for (Triplet<String, String, Integer> permission : permissions) {
             final String name = permission.getValue0();
@@ -64,7 +53,7 @@ public class PermissionControl {
         }
     }
 
-    public static void processPermission(@NonNull final Activity activity
+    static void processPermission(@NonNull final Activity activity
             , final String permissionName, final String permissionRationale
             , final int requestCode) {
         if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permissionName)) {
@@ -80,6 +69,18 @@ public class PermissionControl {
                 }
             });
         }
+    }
+
+    private static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ContextCompat.checkSelfPermission(context, permission)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private static void showMessageOkCancel(@NonNull final Activity activity, final String message
