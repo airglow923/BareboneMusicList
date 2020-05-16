@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,38 +21,18 @@ import org.javatuples.Triplet;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
+import static com.example.musicplayer.PermissionControl.*;
+
 public class MainActivity extends AppCompatActivity {
-
-    private static final int PERMISSION_WRITE_EXTERNAL_STORAGE = 2;
-    private static final int PERMISSION_READ_EXTERNAL_STORAGE = 4;
-    private static final int PERMISSION_ALL =
-            PERMISSION_READ_EXTERNAL_STORAGE | PERMISSION_WRITE_EXTERNAL_STORAGE;
-
-    private static final String[] PERMISSIONS = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-
-    private static List<Triplet<String, String, Integer>> permissionRationales = Arrays.asList(
-            Triplet.with(
-                    PERMISSIONS[0]
-                    , "In order to read and play music, you need to allow access to file."
-                    , PERMISSION_READ_EXTERNAL_STORAGE),
-            Triplet.with(
-                    PERMISSIONS[1]
-                    , "In order to update and delete music, you need to allow access to file."
-                    , PERMISSION_WRITE_EXTERNAL_STORAGE)
-            );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        processMultiplePermission(permissionRationales);
+        processMultiplePermission(PERMISSION_RATIONALE);
 
         TextView allMusic = findViewById(R.id.text_all_music);
 
