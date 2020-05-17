@@ -66,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
+            case PERMISSION_ACCESS_MEDIA_LOCATION:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {}
+                break;
             case PERMISSION_READ_EXTERNAL_STORAGE:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {}

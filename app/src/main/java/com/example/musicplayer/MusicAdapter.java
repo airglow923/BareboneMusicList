@@ -62,7 +62,6 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> 
         holder.titleTextView.setText(music.getTitle());
         holder.artistAlbumTextView.setText(artistAlbum);
         holder.parentView.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 Intent musicIntent = new Intent(context, MusicPlayerActivity.class);

@@ -18,12 +18,14 @@ import java.util.List;
 
 final class PermissionControl {
 
-    static final int PERMISSION_WRITE_EXTERNAL_STORAGE = 2;
-    static final int PERMISSION_READ_EXTERNAL_STORAGE = 4;
+    static final int PERMISSION_ACCESS_MEDIA_LOCATION = 1;
+    static final int PERMISSION_READ_EXTERNAL_STORAGE = 2;
+    static final int PERMISSION_WRITE_EXTERNAL_STORAGE = 4;
     static final int PERMISSION_ALL =
             PERMISSION_READ_EXTERNAL_STORAGE | PERMISSION_WRITE_EXTERNAL_STORAGE;
 
     static final String[] PERMISSIONS = {
+            Manifest.permission.ACCESS_MEDIA_LOCATION,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
@@ -31,10 +33,13 @@ final class PermissionControl {
     static final List<Triplet<String, String, Integer>> PERMISSION_RATIONALE =
             Arrays.asList(
                     Triplet.with(PERMISSIONS[0]
-                            , "To read and play music, you need to allow access to file."
-                            , PERMISSION_READ_EXTERNAL_STORAGE),
+                            , "Allow access to media inside internal storage."
+                            , PERMISSION_ACCESS_MEDIA_LOCATION),
                     Triplet.with(PERMISSIONS[1]
-                            , "To update and delete music, you need to allow access to file."
+                            , "To read and play music, allow access to external storage."
+                            , PERMISSION_READ_EXTERNAL_STORAGE),
+                    Triplet.with(PERMISSIONS[2]
+                            , "To update and delete music, allow access to external storage."
                             , PERMISSION_WRITE_EXTERNAL_STORAGE)
             );
 
