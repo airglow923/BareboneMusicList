@@ -5,15 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
-
-import java.io.File;
-import java.io.IOException;
 
 import static com.example.musicplayer.PermissionControl.*;
 
@@ -55,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(playlistIntent);
             }
         });
+
+        // app-specific directory
+        Log.i("getExternalFilesDir", this.getExternalFilesDir(Environment.DIRECTORY_MUSIC).getPath());
+        // /data
+        Log.i("getDataDirectory", Environment.getDataDirectory().getPath());
+        logDirectory();
     }
 
     @Override
@@ -79,23 +84,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logDirectory() {
-        // Environment.getExternalStorageDirectory() returns /storage/emulated/0
-        // which seems /sdcard/
-        // note that internal storage has been altered when /sdcard has been altered
-        File file = new File(Environment.getExternalStorageDirectory().getPath()
-                + "/emulatordesu.txt");
-        Log.i("Path of external dir:", file.getAbsolutePath());
-        try {
-            File[] files = file.getParentFile().listFiles();
-            if (files == null) {
-                throw new IOException();
-            }
-            for (File inFile : files) {
-                Log.i("File directory: ", inFile.getAbsolutePath());
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        Log.i("Finished printing", "text placeholder");
+        // /internal/file
+        Uri uri = MediaStore.Files.getContentUri(MediaStore.VOLUME_INTERNAL);
+        Log.i("MediaStore: ", uri.getPath());
+
+//        try {
+//            if (file.createNewFile()) {
+//                Log.i("createNewFile(): ", "File created successfully");
+//            }
+//        } catch (IOException e) {
+//        }
+//        Log.i("Path of external dir:", file.getAbsolutePath());
+//        try {
+//            File[] files = file.getParentFile().listFiles();
+//            if (files == null) {
+//                throw new IOException();
+//            }
+//            for (File inFile : files) {
+//                Log.i("File directory: ", inFile.getAbsolutePath());
+//            }
+//        } catch (IOException e) {
+//            System.out.println(e.getMessage());
+//        }
+//        Log.i("Finished printing", "text placeholder");
     }
 }

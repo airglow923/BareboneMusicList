@@ -16,7 +16,7 @@ import org.javatuples.Triplet;
 import java.util.Arrays;
 import java.util.List;
 
-class PermissionControl {
+final class PermissionControl {
 
     static final int PERMISSION_WRITE_EXTERNAL_STORAGE = 2;
     static final int PERMISSION_READ_EXTERNAL_STORAGE = 4;
@@ -30,13 +30,11 @@ class PermissionControl {
 
     static final List<Triplet<String, String, Integer>> PERMISSION_RATIONALE =
             Arrays.asList(
-                    Triplet.with(
-                            PERMISSIONS[0]
-                            , "In order to read and play music, you need to allow access to file."
+                    Triplet.with(PERMISSIONS[0]
+                            , "To read and play music, you need to allow access to file."
                             , PERMISSION_READ_EXTERNAL_STORAGE),
-                    Triplet.with(
-                            PERMISSIONS[1]
-                            , "In order to update and delete music, you need to allow access to file."
+                    Triplet.with(PERMISSIONS[1]
+                            , "To update and delete music, you need to allow access to file."
                             , PERMISSION_WRITE_EXTERNAL_STORAGE)
             );
 
