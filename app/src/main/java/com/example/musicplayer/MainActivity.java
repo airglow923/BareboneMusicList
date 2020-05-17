@@ -7,14 +7,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
 import static com.example.musicplayer.PermissionControl.*;
+import static com.example.musicplayer.MusicLoader.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
         processMultiplePermission(this, PERMISSION_RATIONALE);
 
         TextView allMusic = findViewById(R.id.text_all_music);
-
         allMusic.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -36,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         TextView album = findViewById(R.id.text_album);
-
         album.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         TextView playlist = findViewById(R.id.text_playlist);
-
         playlist.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,11 +50,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // app-specific directory
-        Log.i("getExternalFilesDir", this.getExternalFilesDir(Environment.DIRECTORY_MUSIC).getPath());
-        // /data
-        Log.i("getDataDirectory", Environment.getDataDirectory().getPath());
-        logDirectory();
+        loadMusicFromFolder(this);
     }
 
     @Override
@@ -85,31 +76,5 @@ public class MainActivity extends AppCompatActivity {
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-    }
-
-    private void logDirectory() {
-        // /internal/file
-        Uri uri = MediaStore.Files.getContentUri(MediaStore.VOLUME_INTERNAL);
-        Log.i("MediaStore: ", uri.getPath());
-
-//        try {
-//            if (file.createNewFile()) {
-//                Log.i("createNewFile(): ", "File created successfully");
-//            }
-//        } catch (IOException e) {
-//        }
-//        Log.i("Path of external dir:", file.getAbsolutePath());
-//        try {
-//            File[] files = file.getParentFile().listFiles();
-//            if (files == null) {
-//                throw new IOException();
-//            }
-//            for (File inFile : files) {
-//                Log.i("File directory: ", inFile.getAbsolutePath());
-//            }
-//        } catch (IOException e) {
-//            System.out.println(e.getMessage());
-//        }
-//        Log.i("Finished printing", "text placeholder");
     }
 }

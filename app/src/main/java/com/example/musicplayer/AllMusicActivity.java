@@ -6,9 +6,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class AllMusicActivity extends AppCompatActivity {
+
+    static ArrayList<Music> musics = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +21,6 @@ public class AllMusicActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.list_all_music);
 
         // example music
-        final ArrayList<Music> musics = new ArrayList<>();
-
         musics.add(new Music("新世紀のラブソング", "マジックディスク", "ASIAN KUNG-FU GENERATION"));
         musics.add(new Music("マジックディスク", "マジックディスク", "ASIAN KUNG-FU GENERATION"));
         musics.add(new Music("双子葉", "マジックディスク", "ASIAN KUNG-FU GENERATION"));
