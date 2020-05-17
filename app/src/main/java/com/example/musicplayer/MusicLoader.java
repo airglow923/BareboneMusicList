@@ -21,29 +21,21 @@ final class MusicLoader {
 
     static List<Music> musicList = new ArrayList<Music>();
 
-    private String title;
-    private String album;
-    private String artist;
-    private String albumArtist;
-    private String genre;
-    private String year;
-    private String track;
-    private byte[] albumCover = new byte[0];
-
     public static void loadMusicFromFolder(Context context) {
         String[] projection = {
                 MediaStore.Audio.Media._ID,
                 MediaStore.Audio.Media.TITLE,
                 MediaStore.Audio.Media.ALBUM,
                 MediaStore.Audio.Media.ARTIST,
-                MediaStore.Audio.Genres.NAME,
                 MediaStore.Audio.Media.YEAR,
                 MediaStore.Audio.Media.TRACK
         };
 
-        String selection = MediaStore.Audio.Media.DATA + " like ? ";
-        String[] selectionArgs = listToSelectionArguments(musicFolders);
-        String sortOrder = MediaStore.Audio.Media.TITLE + "ASC";
+//        String selection = MediaStore.Audio.Media.DATA + " like ? ";
+        String selection = null;
+//        String[] selectionArgs = listToSelectionArguments(musicFolders);
+        String[] selectionArgs = null;
+        String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
 
         cursor = context.getContentResolver().query(MediaStore.Audio.Media.INTERNAL_CONTENT_URI
                 , projection, selection, selectionArgs, sortOrder);
@@ -54,7 +46,6 @@ final class MusicLoader {
             int titleColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE);
             int albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM);
             int artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST);
-            int genreColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Genres.NAME);
             int yearColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR);
             int trackColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TRACK);
 
@@ -63,7 +54,6 @@ final class MusicLoader {
                 String title = cursor.getString(titleColumn);
                 String album = cursor.getString(albumColumn);
                 String artist = cursor.getString(artistColumn);
-                String genre = cursor.getString(genreColumn);
                 String year = cursor.getString(yearColumn);
                 String track = cursor.getString(trackColumn);
 
