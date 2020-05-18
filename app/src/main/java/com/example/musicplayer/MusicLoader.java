@@ -16,7 +16,6 @@ final class MusicLoader {
     private static Cursor cursor;
 
     static List<String> musicFolders = Arrays.asList(
-            "Music"
     );
 
     static List<Music> musicList = new ArrayList<Music>();
@@ -31,14 +30,28 @@ final class MusicLoader {
                 MediaStore.Audio.Media.TRACK
         };
 
-//        String selection = MediaStore.Audio.Media.DATA + " like ? ";
+        /**
+         * After dealing with a shit ton of documentations and StackOverflow questions, I finally
+         * figured out what MediaStore really does. MediaStore categorises files inside "Download"
+         * folder and its subfolders, and based on the query, it returns the results to the user.
+         *
+         * One thing to note is that EXTERNAL_CONTENT_API refers to the root directory of the
+         * primary external storage, which is not SD card. Because, removable SD card is considered
+         * as another type of external storage (I also don't know why Android dev team named it in
+         * this way).
+         *
+         * On the other hand, INTERNAL_CONTENT_API is a app-specific directory that can only be
+         * accessed by the app itself.
+         *
+         * MediaStore looks for a scoped storage, which is a shared folder among all the apps.
+         */
+
         String selection = null;
-//        String[] selectionArgs = listToSelectionArguments(musicFolders);
         String[] selectionArgs = null;
         String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
 
-        cursor = context.getContentResolver().query(MediaStore.Audio.Media.INTERNAL_CONTENT_URI
-                , projection, selection, selectionArgs, sortOrder);
+        cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+                , projection, MediaStore.Audio.Media.IS_MUSIC + "=1" + " = 1", selectionArgs, sortOrder);
 
         // prevent NullPointerException
         if (cursor != null && cursor.getCount() > 0) {
@@ -57,11 +70,10 @@ final class MusicLoader {
                 String year = cursor.getString(yearColumn);
                 String track = cursor.getString(trackColumn);
 
-                Uri contentUri = ContentUris.withAppendedId(
-                        MediaStore.Audio.Media.INTERNAL_CONTENT_URI, id);
-
                 Log.i("MediaStore: ", artist + " - " + title);
             }
+        } else {
+            Log.i("MediaStore", "cursor is null or empty");
         }
     }
 

@@ -22,7 +22,8 @@ final class PermissionControl {
     static final int PERMISSION_READ_EXTERNAL_STORAGE = 2;
     static final int PERMISSION_WRITE_EXTERNAL_STORAGE = 4;
     static final int PERMISSION_ALL =
-            PERMISSION_READ_EXTERNAL_STORAGE | PERMISSION_WRITE_EXTERNAL_STORAGE;
+            PERMISSION_ACCESS_MEDIA_LOCATION | PERMISSION_READ_EXTERNAL_STORAGE
+                    | PERMISSION_WRITE_EXTERNAL_STORAGE;
 
     static final String[] PERMISSIONS = {
             Manifest.permission.ACCESS_MEDIA_LOCATION,
