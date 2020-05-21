@@ -1,24 +1,27 @@
 package com.example.musicplayer;
 
-import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 final class MusicLoader {
 
     private static Cursor cursor;
 
-    static List<String> musicFolders = Arrays.asList(
-    );
-
     static List<Music> musicList = new ArrayList<Music>();
+
+//    private String title;
+//    private String album;
+//    private String artist;
+//    private String albumArtist;
+//    private String genre;
+//    private String year;
+//    private String track;
+//    private byte[] albumCover = new byte[0];
 
     public static void loadMusicFromFolder(Context context) {
         String[] projection = {
@@ -51,7 +54,7 @@ final class MusicLoader {
         String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
 
         cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-                , projection, MediaStore.Audio.Media.IS_MUSIC + "=1" + " = 1", selectionArgs, sortOrder);
+                , projection, MediaStore.Audio.Media.IS_MUSIC + " = 1", selectionArgs, sortOrder);
 
         // prevent NullPointerException
         if (cursor != null && cursor.getCount() > 0) {

@@ -1,5 +1,7 @@
 package com.example.musicplayer;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -16,7 +18,7 @@ public class Music implements Comparable<Music>, Parcelable {
     private String genre;
     private String year;
     private String track;
-    private byte[] albumCover = new byte[0];
+    private Bitmap albumCover;
 
     public Music() {}
 
@@ -38,7 +40,7 @@ public class Music implements Comparable<Music>, Parcelable {
     }
 
     public Music(String title, String album, String artist, String albumArtist,  String genre
-            , String year, String track, byte[] albumCover, String albumCoverDir) {
+            , String year, String track, Bitmap albumCover) {
         this(title, album, artist);
         this.albumArtist = albumArtist;
         this.genre = genre;
@@ -67,7 +69,7 @@ public class Music implements Comparable<Music>, Parcelable {
         genre = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE);
         year = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_YEAR);
         track = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_CD_TRACK_NUMBER);
-        albumCover = mmr.getEmbeddedPicture();
+        albumCover = byteArrayToBitmap(mmr.getEmbeddedPicture());
     }
 
     public Music(String path) {
@@ -130,11 +132,11 @@ public class Music implements Comparable<Music>, Parcelable {
         this.track = track;
     }
 
-    public byte[] getAlbumCover() {
+    public Bitmap getAlbumCover() {
         return albumCover;
     }
 
-    public void setAlbumCover(byte[] albumCover) {
+    public void setAlbumCover(Bitmap albumCover) {
         this.albumCover = albumCover;
     }
 
@@ -152,8 +154,7 @@ public class Music implements Comparable<Music>, Parcelable {
         out.writeString(genre);
         out.writeString(year);
         out.writeString(track);
-        out.writeInt(albumCover.length);
-        out.writeByteArray(albumCover);
+        out.writeValue(albumCover);
     }
 
     private Music(Parcel in) {
@@ -164,8 +165,7 @@ public class Music implements Comparable<Music>, Parcelable {
         genre = in.readString();
         year = in.readString();
         track = in.readString();
-        albumCover = new byte[in.readInt()];
-        in.readByteArray(albumCover);
+        albumCover = in.readParcelable(Bitmap.class.getClassLoader());
     }
 
     @Override
@@ -186,4 +186,8 @@ public class Music implements Comparable<Music>, Parcelable {
             return new Music[size];
         }
     };
+
+    private static Bitmap byteArrayToBitmap(byte[] data) {
+        return BitmapFactory.decodeByteArray(data, 0, data.length);
+    }
 }

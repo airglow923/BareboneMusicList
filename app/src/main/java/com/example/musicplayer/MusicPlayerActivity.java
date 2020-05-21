@@ -3,7 +3,6 @@ package com.example.musicplayer;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,10 +30,10 @@ public class MusicPlayerActivity extends AppCompatActivity {
         titleView.setText(music.getTitle());
         artistAlbumView.setText(artistAlbum);
 
-        if (music.getAlbumCover().length == 0) {
+        if (music.getAlbumCover() == null) {
             albumCoverView.setImageResource(R.drawable.default_album_cover);
         } else {
-            albumCoverView.setImageBitmap(byteArrayToBmp(music.getAlbumCover()));
+            albumCoverView.setImageBitmap(music.getAlbumCover());
         }
     }
 
@@ -66,9 +65,5 @@ public class MusicPlayerActivity extends AppCompatActivity {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();
-    }
-
-    private static Bitmap byteArrayToBmp(byte[] data) {
-        return BitmapFactory.decodeByteArray(data, 0, data.length);
     }
 }
