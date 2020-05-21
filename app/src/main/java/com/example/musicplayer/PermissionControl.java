@@ -21,8 +21,8 @@ import java.util.Map;
 
 final class PermissionControl {
 
+    static final boolean IS_ANDROID_Q = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
     static final int PERMISSION_ALL = 1234;
-
     private static List<String> permissionsNeeded = Arrays.asList(
 //            Manifest.permission.READ_EXTERNAL_STORAGE,
 //            Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -46,7 +46,7 @@ final class PermissionControl {
     static void checkAndRequestPermissions(Activity activity) {
         List<String> permissionsNeeded = checkPermissions(activity.getApplicationContext());
 
-        if (permissionsNeeded != null) {
+        if (!permissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(activity, permissionsNeeded.toArray(new String[0])
                     , PERMISSION_ALL);
         } else {
@@ -54,7 +54,7 @@ final class PermissionControl {
         }
     }
 
-    static List<String> checkPermissions(Context context) {
+    static @NonNull List<String> checkPermissions(Context context) {
         List<String> notGranted = new ArrayList<>();
 
         for (String permission : permissionsNeeded) {
@@ -64,7 +64,7 @@ final class PermissionControl {
             }
         }
 
-        return notGranted.isEmpty() ? null : notGranted;
+        return notGranted;
     }
 
     static void showMessageOkCancel(@NonNull final Activity activity, final String message

@@ -1,17 +1,24 @@
 package com.example.musicplayer;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.Size;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.musicplayer.PermissionControl.IS_ANDROID_Q;
+
 final class MusicLoader {
 
-    private static Cursor cursor;
-
+    private static final int ALBUM_ART_WIDTH = 500;
+    private static final int ALBUM_ART_HEIGHT = 500;
     static List<Music> musicList = new ArrayList<Music>();
 
 //    private String title;
@@ -24,13 +31,19 @@ final class MusicLoader {
 //    private byte[] albumCover = new byte[0];
 
     public static void loadMusicFromFolder(Context context) {
-        String[] projection = {
+
+        String[] mediaProjection = {
                 MediaStore.Audio.Media._ID,
                 MediaStore.Audio.Media.TITLE,
+                MediaStore.Audio.Media.ALBUM_ID,
                 MediaStore.Audio.Media.ALBUM,
                 MediaStore.Audio.Media.ARTIST,
                 MediaStore.Audio.Media.YEAR,
                 MediaStore.Audio.Media.TRACK
+        };
+
+        String[] genresProjection = {
+                MediaStore.Audio.Genres.NAME
         };
 
         /**
@@ -49,31 +62,57 @@ final class MusicLoader {
          * MediaStore looks for a scoped storage, which is a shared folder among all the apps.
          */
 
-        String selection = null;
-        String[] selectionArgs = null;
         String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
 
-        cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-                , projection, MediaStore.Audio.Media.IS_MUSIC + " = 1", selectionArgs, sortOrder);
+        Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+                , mediaProjection, MediaStore.Audio.Media.IS_MUSIC + " = 1", null, sortOrder);
 
         // prevent NullPointerException
         if (cursor != null && cursor.getCount() > 0) {
             int idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID);
             int titleColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE);
+            int albumIdColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID);
             int albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM);
             int artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST);
             int yearColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR);
             int trackColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TRACK);
 
             while (cursor.moveToNext()) {
-                long id = cursor.getLong(idColumn);
+                int id = cursor.getInt(idColumn);
                 String title = cursor.getString(titleColumn);
+                int albumId = Integer.parseInt(cursor.getString(albumIdColumn));
                 String album = cursor.getString(albumColumn);
                 String artist = cursor.getString(artistColumn);
                 String year = cursor.getString(yearColumn);
                 String track = cursor.getString(trackColumn);
 
-                Log.i("MediaStore: ", artist + " - " + title);
+                Uri genresUri = MediaStore.Audio.Genres.getContentUriForAudioId("external", id);
+                Cursor genresCursor = context.getContentResolver().query(genresUri
+                        , genresProjection, null, null, null);
+                String genre = null;
+
+                if (genresCursor != null && cursor.getCount() > 0) {
+                    int genresColumn = genresCursor.getColumnIndexOrThrow(
+                            MediaStore.Audio.Genres.NAME);
+                    while (genresCursor.moveToNext()) {
+                        genre = genresCursor.getString(genresColumn);
+                    }
+                }
+
+                Uri externalAlbumsUri = MediaStore.Audio.Albums.getContentUri("external");
+                Uri albumUri = ContentUris.withAppendedId(externalAlbumsUri, albumId);
+                Bitmap albumArt = null;
+
+                if (IS_ANDROID_Q) {
+                    try {
+                        albumArt = context.getContentResolver().loadThumbnail(albumUri
+                                , new Size(ALBUM_ART_WIDTH, ALBUM_ART_HEIGHT), null);
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+
+                musicList.add(new Music(title, album, artist, null, genre, year, track, albumArt));
             }
         } else {
             Log.i("MediaStore", "cursor is null or empty");
