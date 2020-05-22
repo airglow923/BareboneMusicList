@@ -169,8 +169,8 @@ public class Music implements Comparable<Music>, Parcelable {
         return 0;
     }
 
-    public static final Parcelable.Creator<Music> CREATOR
-            = new Parcelable.Creator<Music>() {
+    public static final Parcelable.Creator<Music> CREATOR =
+            new Parcelable.Creator<Music>() {
 
         @Override
         public Music createFromParcel(Parcel in) {

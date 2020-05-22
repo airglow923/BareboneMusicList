@@ -42,6 +42,16 @@ final class MusicLoader {
          * figured out what MediaStore really does. MediaStore categorises files inside "Download"
          * folder and its subfolders, and based on the query, it returns the results to the user.
          *
+         * https://developer.android.com/training/data-storage/shared/media
+         *
+         * The link above is the tip from the official documentation for Android MediaStore. It
+         * states that
+         *
+         *      Audio files, which are stored in the Alarms/, Audiobooks/, Music/, Notifications/,
+         *      Podcasts/, and Ringtones/ directories, as well as audio playlists that are in the
+         *      Music/ or Movies/ directories. The system adds these files to the MediaStore.Audio
+         *      table.
+         *
          * One thing to note is that EXTERNAL_CONTENT_API refers to the root directory of the
          * primary external storage, which is not SD card. Because, removable SD card is considered
          * as another type of external storage (I also don't know why Android dev team named it in
