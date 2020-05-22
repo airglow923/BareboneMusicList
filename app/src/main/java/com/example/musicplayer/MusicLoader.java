@@ -21,15 +21,6 @@ final class MusicLoader {
     private static final int ALBUM_ART_HEIGHT = 500;
     static List<Music> musicList = new ArrayList<Music>();
 
-//    private String title;
-//    private String album;
-//    private String artist;
-//    private String albumArtist;
-//    private String genre;
-//    private String year;
-//    private String track;
-//    private byte[] albumCover = new byte[0];
-
     public static void loadMusicFromFolder(Context context) {
 
         String[] mediaProjection = {
@@ -101,19 +92,19 @@ final class MusicLoader {
 
                 Uri albumUri = ContentUris.withAppendedId(
                         MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, albumId);
-                Bitmap albumArt = null;
+                Bitmap albumCover = null;
 
                 if (IS_ANDROID_Q) {
                     try {
-                        albumArt = context.getContentResolver().loadThumbnail(albumUri
+                        albumCover = context.getContentResolver().loadThumbnail(albumUri
                                 , new Size(ALBUM_ART_WIDTH, ALBUM_ART_HEIGHT), null);
                     } catch (IOException e) {
                         System.out.println(e.getMessage());
                     }
                 }
 
-                Log.i("MediaStore", title + " - " + genre);
-                musicList.add(new Music(title, album, artist, null, genre, year, track, albumArt));
+                musicList.add(new Music(title, album, artist, null, genre, year, track
+                        , albumCover));
             }
         } else {
             Log.i("MediaStore", "cursor is null or empty");

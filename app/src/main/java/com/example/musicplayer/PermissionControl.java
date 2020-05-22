@@ -21,11 +21,11 @@ final class PermissionControl {
 
     static final boolean IS_ANDROID_Q = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
     static final int PERMISSION_ALL = 1234;
-    static Map<String, String> permissionRationale = new HashMap<String, String>();
-    private static List<String> permissionsNeeded = new ArrayList<>();
     static final String DENIED_PERMISSION_MESSAGE =
             "You disallowed permission for this feature.\n"
-            + "To allows it, go to [Setting] > [Apps & notifications] > [App permissions]";
+                    + "To allows it, go to [Setting] > [Apps & notifications] > [App permissions]";
+    static Map<String, String> permissionRationale = new HashMap<String, String>();
+    private static List<String> permissionsNeeded = new ArrayList<>();
 
     public PermissionControl() {
         init();

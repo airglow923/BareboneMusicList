@@ -33,15 +33,11 @@ public class Music implements Comparable<Music>, Parcelable {
         albumCover = other.albumCover;
     }
 
-    public Music(String title, String album, String artist) {
+    public Music(String title, String album, String artist, String albumArtist,  String genre
+            , String year, String track, Bitmap albumCover) {
         this.title = title;
         this.album = album;
         this.artist = artist;
-    }
-
-    public Music(String title, String album, String artist, String albumArtist,  String genre
-            , String year, String track, Bitmap albumCover) {
-        this(title, album, artist);
         this.albumArtist = albumArtist;
         this.genre = genre;
         this.year = year;
