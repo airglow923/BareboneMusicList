@@ -29,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
         PermissionControl permissionControl = new PermissionControl();
         checkAndRequestPermissions(MainActivity.this);
 
+        if (checkPermissions(this).isEmpty()) {
+            loadMusicFromFolder(this);
+        }
+
         TextView allMusic = findViewById(R.id.text_all_music);
         allMusic.setOnClickListener(new OnClickListener() {
             @Override
@@ -98,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 } else {
-                    // features that require file access
-                    loadMusicFromFolder(this);
                 }
             }
             default:

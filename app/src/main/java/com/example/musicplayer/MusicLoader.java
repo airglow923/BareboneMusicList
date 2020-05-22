@@ -99,8 +99,8 @@ final class MusicLoader {
                     }
                 }
 
-                Uri externalAlbumsUri = MediaStore.Audio.Albums.getContentUri("external");
-                Uri albumUri = ContentUris.withAppendedId(externalAlbumsUri, albumId);
+                Uri albumUri = ContentUris.withAppendedId(
+                        MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, albumId);
                 Bitmap albumArt = null;
 
                 if (IS_ANDROID_Q) {
@@ -112,6 +112,7 @@ final class MusicLoader {
                     }
                 }
 
+                Log.i("MediaStore", title + " - " + genre);
                 musicList.add(new Music(title, album, artist, null, genre, year, track, albumArt));
             }
         } else {

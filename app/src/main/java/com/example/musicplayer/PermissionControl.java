@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -14,7 +13,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,18 +21,8 @@ final class PermissionControl {
 
     static final boolean IS_ANDROID_Q = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
     static final int PERMISSION_ALL = 1234;
-    private static List<String> permissionsNeeded = Arrays.asList(
-//            Manifest.permission.READ_EXTERNAL_STORAGE,
-//            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    );
-
-    static Map<String, String> permissionRationale = new HashMap<String, String>() {{
-//        put(permissionsNeeded.get(0)
-//                , "To update and delete music, allow access to external storage.");
-//        put(permissionsNeeded.get(1)
-//                , "To read and play music, allow access to external storage.");
-    }};
-
+    static Map<String, String> permissionRationale = new HashMap<String, String>();
+    private static List<String> permissionsNeeded = new ArrayList<>();
     static final String DENIED_PERMISSION_MESSAGE =
             "You disallowed permission for this feature.\n"
             + "To allows it, go to [Setting] > [Apps & notifications] > [App permissions]";
@@ -49,8 +37,6 @@ final class PermissionControl {
         if (!permissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(activity, permissionsNeeded.toArray(new String[0])
                     , PERMISSION_ALL);
-        } else {
-            Log.i("chkNReqPerm", "null");
         }
     }
 
@@ -78,8 +64,15 @@ final class PermissionControl {
     }
 
     private void init() {
-        Log.i("SDK_INT", Integer.toString(Build.VERSION.SDK_INT));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        permissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        permissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        permissionRationale.put(permissionsNeeded.get(0)
+                , "To update and delete music, allow access to external storage.");
+        permissionRationale.put(permissionsNeeded.get(1)
+                , "To read and play music, allow access to external storage.");
+
+        if (IS_ANDROID_Q) {
             permissionsNeeded.add(Manifest.permission.ACCESS_MEDIA_LOCATION);
             permissionRationale.put(
                     permissionsNeeded.get(2)
