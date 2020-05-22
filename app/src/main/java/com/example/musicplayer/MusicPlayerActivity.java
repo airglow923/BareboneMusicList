@@ -61,7 +61,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         return filename.substring(0, filename.lastIndexOf('.'));
     }
 
-    private static byte[] bmpToByteArray(Bitmap bitmap) {
+    private static byte[] bitmapToByteArray(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();

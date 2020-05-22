@@ -88,15 +88,16 @@ final class MusicLoader {
                 String track = cursor.getString(trackColumn);
 
                 Uri genresUri = MediaStore.Audio.Genres.getContentUriForAudioId("external", id);
-                Cursor genresCursor = context.getContentResolver().query(genresUri
-                        , genresProjection, null, null, null);
                 String genre = null;
 
-                if (genresCursor != null && cursor.getCount() > 0) {
-                    int genresColumn = genresCursor.getColumnIndexOrThrow(
-                            MediaStore.Audio.Genres.NAME);
-                    while (genresCursor.moveToNext()) {
-                        genre = genresCursor.getString(genresColumn);
+                try (Cursor genresCursor = context.getContentResolver().query(genresUri
+                        , genresProjection, null, null, null)) {
+                    if (genresCursor != null && cursor.getCount() > 0) {
+                        int genresColumn = genresCursor.getColumnIndexOrThrow(
+                                MediaStore.Audio.Genres.NAME);
+                        while (genresCursor.moveToNext()) {
+                            genre = genresCursor.getString(genresColumn);
+                        }
                     }
                 }
 
@@ -116,6 +117,8 @@ final class MusicLoader {
                 musicList.add(new Music(title, album, artist, null, genre, year, track
                         , albumCover));
             }
+
+            cursor.close();
         } else {
             Log.i("MediaStore", "cursor is null or empty");
         }
