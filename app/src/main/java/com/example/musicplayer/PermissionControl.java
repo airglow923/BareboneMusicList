@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -17,9 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.musicplayer.AndroidVersion.*;
+
 final class PermissionControl {
 
-    static final boolean IS_ANDROID_Q = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
     static final int PERMISSION_ALL = 1234;
     static final String DENIED_PERMISSION_MESSAGE =
             "You disallowed permission for this feature.\n"

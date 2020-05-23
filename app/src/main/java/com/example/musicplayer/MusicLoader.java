@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.musicplayer.PermissionControl.IS_ANDROID_Q;
+import static com.example.musicplayer.AndroidVersion.*;
 
 final class MusicLoader {
 
