@@ -15,11 +15,11 @@ import java.util.List;
 
 import static com.example.musicplayer.AndroidVersion.*;
 
-final class MusicLoader {
+public final class MusicLoader {
 
     private static final int ALBUM_ART_WIDTH = 500;
     private static final int ALBUM_ART_HEIGHT = 500;
-    static List<Music> musicList = new ArrayList<Music>();
+    public static List<Music> musicList = new ArrayList<Music>();
 
     public static void loadMusicFromFolder(Context context) {
 

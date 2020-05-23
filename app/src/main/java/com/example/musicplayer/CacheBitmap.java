@@ -1,6 +1,7 @@
 package com.example.musicplayer;
 
 import android.graphics.Bitmap;
+import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.collection.LruCache;
@@ -19,24 +20,11 @@ public final class CacheBitmap {
             : new HashSet<SoftReference<Bitmap>>();
     private LruCache<String, Bitmap> memoryCache;
 
-    public Set<SoftReference<Bitmap>> getReusableObjects() {
-        return reusableObjects;
-    }
+    public CacheBitmap() {
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        final int cacheSize = maxMemory / 8;
 
-    public void setReusableObjects(Set<SoftReference<Bitmap>> reusableObjects) {
-        this.reusableObjects = reusableObjects;
-    }
-
-    public LruCache<String, Bitmap> getMemoryCache() {
-        return memoryCache;
-    }
-
-    public void setMemoryCache(LruCache<String, Bitmap> memoryCache) {
-        this.memoryCache = memoryCache;
-    }
-
-    public CacheBitmap(int maxSize) {
-        memoryCache = new LruCache<String, Bitmap>(maxSize) {
+        memoryCache = new LruCache<String, Bitmap>(cacheSize) {
             @Override
             protected int sizeOf(@NonNull String key, @NonNull Bitmap value) {
                 return value.getByteCount() / 1024;
@@ -53,4 +41,6 @@ public final class CacheBitmap {
     public Bitmap getBitmapFromCache(String key) {
         return memoryCache.get(key);
     }
+
+    public void loadBitmap(int placedholder) {}
 }
