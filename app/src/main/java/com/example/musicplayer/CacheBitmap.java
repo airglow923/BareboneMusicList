@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Looper;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.collection.LruCache;
 
 import java.lang.ref.SoftReference;
@@ -13,14 +14,14 @@ import java.util.Set;
 
 import static com.example.musicplayer.AndroidVersion.*;
 
-public final class CacheBitmap {
+class CacheBitmap {
 
     private Set<SoftReference<Bitmap>> reusableObjects = IS_ANDROID_HONEYCOMB
             ? Collections.synchronizedSet(new HashSet<SoftReference<Bitmap>>())
             : new HashSet<SoftReference<Bitmap>>();
     private LruCache<String, Bitmap> memoryCache;
 
-    public CacheBitmap() {
+    CacheBitmap() {
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         final int cacheSize = maxMemory / 8;
 
@@ -32,15 +33,13 @@ public final class CacheBitmap {
         };
     }
 
-    public void addBitmapToCache(String key, Bitmap value) {
+    void addBitmapToCache(String key, Bitmap value) {
         if (getBitmapFromCache(key) == null) {
             memoryCache.put(key, value);
         }
     }
 
-    public Bitmap getBitmapFromCache(String key) {
+    Bitmap getBitmapFromCache(String key) {
         return memoryCache.get(key);
     }
-
-    public void loadBitmap(int placedholder) {}
 }

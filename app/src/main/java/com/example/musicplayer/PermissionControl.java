@@ -27,7 +27,7 @@ final class PermissionControl {
     static Map<String, String> permissionRationale = new HashMap<String, String>();
     private static List<String> permissionsNeeded = new ArrayList<>();
 
-    public PermissionControl() {
+    PermissionControl() {
         init();
     }
 
