@@ -88,6 +88,8 @@ public final class MusicLoader {
                 String year = cursor.getString(yearColumn);
                 String track = cursor.getString(trackColumn);
 
+                Uri musicUri = ContentUris.withAppendedId(
+                        MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id);
                 Uri genresUri = MediaStore.Audio.Genres.getContentUriForAudioId("external", id);
                 String genre = null;
 
@@ -115,7 +117,7 @@ public final class MusicLoader {
                     }
                 }
 
-                musicList.add(new Music(title, album, artist, null, genre, year, track
+                musicList.add(new Music(musicUri, title, album, artist, null, genre, year, track
                         , albumCover));
             }
 

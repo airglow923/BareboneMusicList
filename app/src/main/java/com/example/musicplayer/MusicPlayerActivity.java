@@ -21,6 +21,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setContentView(R.layout.music_player_main);
 
         Music music = getIntent().getParcelableExtra("music");
+        mediaPlayer = MediaPlayer.create(this, music.getUri());
         String artistAlbum = music.getArtist() + " - " + music.getAlbum();
 
         TextView titleView = findViewById(R.id.text_music_player_title);
@@ -41,10 +42,10 @@ public class MusicPlayerActivity extends AppCompatActivity {
         ImageView imageView = findViewById(R.id.image_music_player_play_pause);
 
         if (mediaPlayer.isPlaying()) {
-            imageView.setImageResource(R.drawable.pause_button);
+            imageView.setImageResource(R.drawable.play_button);
             mediaPlayer.pause();
         } else {
-            imageView.setImageResource(R.drawable.play_button);
+            imageView.setImageResource(R.drawable.pause_button);
             mediaPlayer.start();
         }
     }

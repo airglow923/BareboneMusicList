@@ -156,7 +156,7 @@ public class Music implements Comparable<Music>, Parcelable {
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
-        out.writeValue(uri);
+        out.writeString(uri.toString());
         out.writeString(title);
         out.writeString(album);
         out.writeString(artist);
@@ -168,7 +168,7 @@ public class Music implements Comparable<Music>, Parcelable {
     }
 
     private Music(Parcel in) {
-        uri = in.readParcelable(Uri.class.getClassLoader());
+        uri = Uri.parse(in.readString());
         title = in.readString();
         album = in.readString();
         artist = in.readString();
