@@ -37,7 +37,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         }
     }
 
-    public void playPause(View view) {
+    public void playOrPause(View view) {
         ImageView imageView = findViewById(R.id.image_music_player_play_pause);
 
         if (mediaPlayer.isPlaying()) {
@@ -49,11 +49,11 @@ public class MusicPlayerActivity extends AppCompatActivity {
         }
     }
 
-    public void backward(View view) {
+    public void goToPrevious(View view) {
         // TODO
     }
 
-    public void forward(View view) {
+        public void goToNext(View view) {
         // TODO
     }
 

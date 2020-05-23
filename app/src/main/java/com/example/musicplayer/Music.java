@@ -3,6 +3,7 @@ package com.example.musicplayer;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,6 +12,7 @@ import java.io.File;
 public class Music implements Comparable<Music>, Parcelable {
 
     // referenced id3v2 format
+    private Uri uri;
     private String title;
     private String album;
     private String artist;
@@ -23,6 +25,7 @@ public class Music implements Comparable<Music>, Parcelable {
     public Music() {}
 
     public Music(Music other) {
+        uri = other.uri;
         title = other.title;
         album = other.album;
         artist = other.artist;
@@ -33,8 +36,9 @@ public class Music implements Comparable<Music>, Parcelable {
         albumCover = other.albumCover;
     }
 
-    public Music(String title, String album, String artist, String albumArtist,  String genre
-            , String year, String track, Bitmap albumCover) {
+    public Music(Uri uri, String title, String album, String artist, String albumArtist
+            , String genre, String year, String track, Bitmap albumCover) {
+        this.uri = uri;
         this.title = title;
         this.album = album;
         this.artist = artist;
@@ -58,6 +62,7 @@ public class Music implements Comparable<Music>, Parcelable {
             System.out.println(e.getMessage());
         }
 
+        uri = Uri.parse(file.toURI().toString());
         title = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
         album = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
         artist = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
@@ -70,6 +75,14 @@ public class Music implements Comparable<Music>, Parcelable {
 
     public Music(String path) {
         this(new File(path));
+    }
+
+    public Uri getUri() {
+        return uri;
+    }
+
+    public void setUri(Uri uri) {
+        this.uri = uri;
     }
 
     public String getTitle() {
@@ -143,6 +156,7 @@ public class Music implements Comparable<Music>, Parcelable {
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
+        out.writeValue(uri);
         out.writeString(title);
         out.writeString(album);
         out.writeString(artist);
@@ -150,10 +164,11 @@ public class Music implements Comparable<Music>, Parcelable {
         out.writeString(genre);
         out.writeString(year);
         out.writeString(track);
-        out.writeValue(albumCover);
+//        out.writeValue(albumCover);
     }
 
     private Music(Parcel in) {
+        uri = in.readParcelable(Uri.class.getClassLoader());
         title = in.readString();
         album = in.readString();
         artist = in.readString();
@@ -161,7 +176,7 @@ public class Music implements Comparable<Music>, Parcelable {
         genre = in.readString();
         year = in.readString();
         track = in.readString();
-        albumCover = in.readParcelable(Bitmap.class.getClassLoader());
+//        albumCover = in.readParcelable(Bitmap.class.getClassLoader());
     }
 
     @Override

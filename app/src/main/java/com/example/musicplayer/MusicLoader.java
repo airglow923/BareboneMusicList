@@ -65,8 +65,9 @@ public final class MusicLoader {
 
         String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
 
-        Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-                , mediaProjection, MediaStore.Audio.Media.IS_MUSIC + " = 1", null, sortOrder);
+        Cursor cursor = context.getContentResolver().query(
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, mediaProjection
+                , MediaStore.Audio.Media.IS_MUSIC + " = 1", null, sortOrder);
 
         // prevent NullPointerException
         if (cursor != null && cursor.getCount() > 0) {

@@ -1,10 +1,9 @@
 package com.example.musicplayer;
 
 import android.graphics.Bitmap;
-import android.os.Looper;
+import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.collection.LruCache;
 
 import java.lang.ref.SoftReference;
@@ -41,5 +40,10 @@ class CacheBitmap {
 
     Bitmap getBitmapFromCache(String key) {
         return memoryCache.get(key);
+    }
+
+    static int calculateInSampleSize(BitmapFactory.Options options, int requestWidth
+            , int requestHeight) {
+        return 0;
     }
 }

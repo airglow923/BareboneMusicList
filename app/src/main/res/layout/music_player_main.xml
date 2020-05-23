@@ -39,19 +39,19 @@
             android:id="@+id/image_music_player_backward"
             style="@style/MusicPlayerInterfaceTheme"
             app:srcCompat="@drawable/previous_button"
-            android:onClick="backward" />
+            android:onClick="goToPrevious" />
 
         <ImageView
             android:id="@+id/image_music_player_play_pause"
             style="@style/MusicPlayerInterfaceTheme"
             app:srcCompat="@drawable/play_button"
-            android:onClick="playPause" />
+            android:onClick="playOrPause" />
 
         <ImageView
             android:id="@+id/image_music_player_forward"
             style="@style/MusicPlayerInterfaceTheme"
             app:srcCompat="@drawable/next_button"
-            android:onClick="forward" />
+            android:onClick="goToNext" />
 
     </LinearLayout>
 
