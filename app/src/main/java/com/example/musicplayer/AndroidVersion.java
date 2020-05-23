@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 
 @SuppressLint("ObsoleteSdkInt")
-public class AndroidVersion {
+public final class AndroidVersion {
 
     public static final boolean IS_ANDROID_BASE = Build.VERSION.SDK_INT >= Build.VERSION_CODES.BASE;
     public static final boolean IS_ANDROID_BASE_1_1 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.BASE_1_1;
