@@ -22,7 +22,6 @@ public final class MusicLoader {
     public static List<Music> musicList = new ArrayList<Music>();
 
     public static void loadMusicFromFolder(Context context) {
-
         String[] mediaProjection = {
                 MediaStore.Audio.Media._ID,
                 MediaStore.Audio.Media.TITLE,

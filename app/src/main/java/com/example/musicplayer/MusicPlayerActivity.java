@@ -1,8 +1,10 @@
 package com.example.musicplayer;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,10 +12,14 @@ import android.widget.TextView;
 import android.media.MediaPlayer;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
+
+import static com.example.musicplayer.MusicLoader.musicList;
 
 public class MusicPlayerActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
+    private int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +27,93 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setContentView(R.layout.music_player_main);
 
         Music music = getIntent().getParcelableExtra("music");
-        mediaPlayer = MediaPlayer.create(this, music.getUri());
+        Uri musicUri = music.getUri();
+
+        if (musicUri != null) {
+            mediaPlayer = MediaPlayer.create(this, music.getUri());
+        } else {
+            mediaPlayer = null;
+        }
+
+        index = getIndexFromArray(musicUri, musicList);
+        updateMusicPlayer(music);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mediaPlayer.release();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mediaPlayer.release();
+    }
+
+    public void playOrPause(View view) {
+        if (mediaPlayer != null) {
+            ImageView imageView = findViewById(R.id.image_music_player_play_pause);
+            int nextInt = getNextIndex(index, musicList);
+
+            if (nextInt != -1) {
+                mediaPlayer.setNextMediaPlayer(
+                        MediaPlayer.create(this, musicList.get(nextInt).getUri()));
+            }
+
+            if (mediaPlayer.isPlaying()) {
+                imageView.setImageResource(R.drawable.play_button);
+                mediaPlayer.pause();
+            } else {
+                imageView.setImageResource(R.drawable.pause_button);
+                mediaPlayer.start();
+            }
+        }
+    }
+
+    public void goToPrevious(View view) {
+        ((ImageView) findViewById(R.id.image_music_player_play_pause))
+                .setImageResource(R.drawable.play_button);
+        index = getPreviousIndex(index, musicList);
+        Uri musicUri = index == -1 ? null : musicList.get(index).getUri();
+
+        if (musicUri != null) {
+            mediaPlayer.release();
+            mediaPlayer = MediaPlayer.create(this, musicUri);
+            updateMusicPlayer(musicList.get(index));
+
+            int nextIndex = getNextIndex(index, musicList);
+            Uri nextUri = index == -1 ? null : musicList.get(index).getUri();
+
+            if (nextUri != null) {
+                mediaPlayer.setNextMediaPlayer(
+                        MediaPlayer.create(this, nextUri));
+            }
+        }
+    }
+
+    public void goToNext(View view) {
+        ((ImageView) findViewById(R.id.image_music_player_play_pause))
+                .setImageResource(R.drawable.play_button);
+        index = getNextIndex(index, musicList);
+        Uri musicUri = index == -1 ? null : musicList.get(index).getUri();
+
+        if (musicUri != null) {
+            mediaPlayer.release();
+            mediaPlayer = MediaPlayer.create(this, musicUri);
+            updateMusicPlayer(musicList.get(index));
+
+            int nextIndex = getNextIndex(index, musicList);
+            Uri nextUri = index == -1 ? null : musicList.get(index).getUri();
+
+            if (nextUri != null) {
+                mediaPlayer.setNextMediaPlayer(
+                        MediaPlayer.create(this, nextUri));
+            }
+        }
+    }
+
+    private void updateMusicPlayer(Music music) {
         String artistAlbum = music.getArtist() + " - " + music.getAlbum();
 
         TextView titleView = findViewById(R.id.text_music_player_title);
@@ -38,24 +130,24 @@ public class MusicPlayerActivity extends AppCompatActivity {
         }
     }
 
-    public void playOrPause(View view) {
-        ImageView imageView = findViewById(R.id.image_music_player_play_pause);
+    private static int getPreviousIndex(int index, List<Music> musics) {
+        return index < 0 ? -1 : --index;
+    }
 
-        if (mediaPlayer.isPlaying()) {
-            imageView.setImageResource(R.drawable.play_button);
-            mediaPlayer.pause();
-        } else {
-            imageView.setImageResource(R.drawable.pause_button);
-            mediaPlayer.start();
+    private static int getNextIndex(int index, List<Music> musics) {
+        return index == -1 || index + 1 == musics.size() ? -1 : ++index;
+    }
+
+    private static int getIndexFromArray(Uri uri, List<Music> musics) {
+        if (uri == null || musics == null)
+            return -1;
+
+        for (int i = 0; i < musics.size(); ++i) {
+            if (musics.get(i).getUri().equals(uri)) {
+                return i;
+            }
         }
-    }
-
-    public void goToPrevious(View view) {
-        // TODO
-    }
-
-        public void goToNext(View view) {
-        // TODO
+        return -1;
     }
 
     private static String stem(String filename) {
