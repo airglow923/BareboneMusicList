@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         allMusic.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent allMusicIntent = new Intent(MainActivity.this, AllMusicActivity.class);
+                Intent allMusicIntent = new Intent(MainActivity.this, AllMusicFragment.class);
                 startActivity(allMusicIntent);
             }
         });
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         album.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent albumIntent = new Intent(MainActivity.this, AlbumActivity.class);
+                Intent albumIntent = new Intent(MainActivity.this, AlbumFragment.class);
                 startActivity(albumIntent);
             }
         });
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         playlist.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent playlistIntent = new Intent(MainActivity.this, PlaylistActivity.class);
+                Intent playlistIntent = new Intent(MainActivity.this, PlaylistFragment.class);
                 startActivity(playlistIntent);
             }
         });

@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AllMusicActivity"
+        <activity android:name=".AllMusicFragment"
             android:label="All Music"
             android:parentActivityName=".MainActivity">
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -28,7 +28,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
-        <activity android:name=".AlbumActivity"
+        <activity android:name=".AlbumFragment"
             android:label="Album"
             android:parentActivityName=".MainActivity">
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -36,7 +36,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
-        <activity android:name=".PlaylistActivity"
+        <activity android:name=".PlaylistFragment"
             android:label="Playlist"
             android:parentActivityName=".MainActivity">
             <!-- Parent activity meta-data to support 4.0 and lower -->
@@ -44,8 +44,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
-        <activity android:name=".MusicPlayerActivity"
-            android:parentActivityName=".AllMusicActivity"
+        <activity android:name=".MusicPlayerFragment"
+            android:parentActivityName=".AllMusicFragment"
             android:label="MusicPlayer">
         </activity>
     </application>

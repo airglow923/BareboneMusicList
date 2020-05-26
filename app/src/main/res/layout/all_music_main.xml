@@ -8,6 +8,6 @@
     android:padding="16dp"
     android:orientation="vertical"
     android:background="@color/background"
-    tools:context="com.example.musicplayer.AllMusicActivity">
+    tools:context="com.example.musicplayer.AllMusicFragment">
 
 </androidx.recyclerview.widget.RecyclerView>
