@@ -1,6 +1,5 @@
 package com.example.musicplayer;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
@@ -19,6 +18,13 @@ import static com.example.musicplayer.MusicLoader.musicList;
 public class MusicPlayerActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
+    private MediaPlayer.OnCompletionListener onCompletionListener =
+            new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer mp) {
+            mp.release();
+        }
+    };
     private int index;
 
     @Override
@@ -31,18 +37,19 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         if (musicUri != null) {
             mediaPlayer = MediaPlayer.create(this, music.getUri());
+            mediaPlayer.setOnCompletionListener(onCompletionListener);
         } else {
             mediaPlayer = null;
         }
 
         index = getIndexFromArray(musicUri, musicList);
         updateMusicPlayer(music);
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mediaPlayer.release();
+        int nextInt = getNextIndex(index, musicList);
+        if (nextInt != -1) {
+            mediaPlayer.setNextMediaPlayer(
+                    MediaPlayer.create(this, musicList.get(nextInt).getUri()));
+        }
     }
 
     @Override
@@ -54,12 +61,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
     public void playOrPause(View view) {
         if (mediaPlayer != null) {
             ImageView imageView = findViewById(R.id.image_music_player_play_pause);
-            int nextInt = getNextIndex(index, musicList);
-
-            if (nextInt != -1) {
-                mediaPlayer.setNextMediaPlayer(
-                        MediaPlayer.create(this, musicList.get(nextInt).getUri()));
-            }
 
             if (mediaPlayer.isPlaying()) {
                 imageView.setImageResource(R.drawable.play_button);
