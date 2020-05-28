@@ -31,9 +31,9 @@ public class SquareRelativeLayout extends RelativeLayout {
             size = getContext().getResources()
                     .getDimensionPixelSize(R.dimen.default_music_player_album_cover_size);
         } else if (widthDesc == MeasureSpec.UNSPECIFIED || heightDesc == MeasureSpec.UNSPECIFIED) {
-            size = width > height ? width : height;
+            size = Math.max(width, height);
         } else {
-            size = width > height ? height : width;
+            size = Math.min(width, height);
         }
 
         size = MeasureSpec.makeMeasureSpec(size, MeasureSpec.EXACTLY);

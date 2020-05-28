@@ -7,7 +7,6 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -60,22 +59,15 @@ public class MainActivity extends AppCompatActivity {
                                 , entry.getKey())) {
                             showMessageOkCancel(MainActivity.this
                                     , permissionRationale.get(entry.getKey())
-                                    , new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            ActivityCompat.requestPermissions(MainActivity.this
-                                                    , new String[]{entry.getKey()}, requestCode);
-                                        }
-                                    });
+                                    , (dialog, which)
+                                            -> ActivityCompat.requestPermissions(MainActivity.this
+                                            , new String[]{entry.getKey()}, requestCode));
                         } else {
                             new AlertDialog.Builder(MainActivity.this)
                                     .setMessage(DENIED_PERMISSION_MESSAGE)
-                                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                            finish();
-                                        }
+                                    .setNeutralButton("OK", (dialog, which) -> {
+                                        dialog.dismiss();
+                                        finish();
                                     })
                                     .create()
                                     .show();
