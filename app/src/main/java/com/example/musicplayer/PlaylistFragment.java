@@ -11,6 +11,11 @@ import android.view.ViewGroup;
 
 public class PlaylistFragment extends Fragment {
 
+    static final String TAG = PlaylistFragment.class.getSimpleName();
+    static final String LOG_TAG = PlaylistFragment.class.getSimpleName();
+
+    public PlaylistFragment() {}
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container

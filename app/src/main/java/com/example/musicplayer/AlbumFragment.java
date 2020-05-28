@@ -11,6 +11,11 @@ import android.view.ViewGroup;
 
 public class AlbumFragment extends Fragment {
 
+    static final String TAG = AlbumFragment.class.getSimpleName();
+    static final String LOG_TAG = AlbumFragment.class.getSimpleName();
+
+    public AlbumFragment() {}
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container

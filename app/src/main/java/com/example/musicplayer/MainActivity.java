@@ -3,15 +3,15 @@ package com.example.musicplayer;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
-import android.view.View.OnClickListener;
+
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,32 +33,12 @@ public class MainActivity extends AppCompatActivity {
             loadMusicFromFolder(this);
         }
 
-        TextView allMusic = findViewById(R.id.text_all_music);
-        allMusic.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent allMusicIntent = new Intent(MainActivity.this, AllMusicFragment.class);
-                startActivity(allMusicIntent);
-            }
-        });
+        ViewPager viewPager = findViewById(R.id.viewpager);
+        PagerAdapter pagerAdapter = new MusicPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
 
-        TextView album = findViewById(R.id.text_album);
-        album.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent albumIntent = new Intent(MainActivity.this, AlbumFragment.class);
-                startActivity(albumIntent);
-            }
-        });
-
-        TextView playlist = findViewById(R.id.text_playlist);
-        playlist.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent playlistIntent = new Intent(MainActivity.this, PlaylistFragment.class);
-                startActivity(playlistIntent);
-            }
-        });
+        TabLayout tabLayout = findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override

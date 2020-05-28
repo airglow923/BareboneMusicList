@@ -21,6 +21,9 @@ import static com.example.musicplayer.MusicLoader.musicList;
 
 public class MusicPlayerFragment extends Fragment {
 
+    static final String TAG = MusicPlayerFragment.class.getSimpleName();
+    static final String LOG_TAG = MusicPlayerFragment.class.getSimpleName();
+
     private MediaPlayer mediaPlayer;
     private MediaPlayer.OnCompletionListener onCompletionListener = MediaPlayer::release;
     private int index;
@@ -32,6 +35,12 @@ public class MusicPlayerFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container
             , @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.music_player_main, container, false);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         Music music = getActivity().getIntent().getParcelableExtra("music");
         Uri musicUri = music.getUri();
