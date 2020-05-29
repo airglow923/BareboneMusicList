@@ -61,13 +61,10 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> 
 
         holder.titleTextView.setText(music.getTitle());
         holder.artistAlbumTextView.setText(artistAlbum);
-        holder.parentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent musicIntent = new Intent(context, MusicPlayerFragment.class);
-                musicIntent.putExtra("music", music);
-                context.startActivity(musicIntent);
-            }
+        holder.parentView.setOnClickListener(view -> {
+            Intent intent = new Intent(context, MusicPlayerActivity.class);
+            intent.putExtra("music", music);
+            context.startActivity(intent);
         });
     }
 

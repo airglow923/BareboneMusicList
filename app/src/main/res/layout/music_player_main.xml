@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/MusicPlayerTheme"
-    tools:context="com.example.musicplayer.MusicPlayerFragment">
+    tools:context="com.example.musicplayer.MusicPlayerActivity">
     
     <com.example.musicplayer.SquareRelativeLayout
         android:id="@+id/square_music_player"

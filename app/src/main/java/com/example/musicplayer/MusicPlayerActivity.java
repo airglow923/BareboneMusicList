@@ -1,15 +1,11 @@
 package com.example.musicplayer;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.media.MediaPlayer;
@@ -19,34 +15,25 @@ import java.util.List;
 
 import static com.example.musicplayer.MusicLoader.musicList;
 
-public class MusicPlayerFragment extends Fragment {
+public class MusicPlayerActivity extends AppCompatActivity {
 
-    static final String TAG = MusicPlayerFragment.class.getSimpleName();
-    static final String LOG_TAG = MusicPlayerFragment.class.getSimpleName();
+    static final String TAG = MusicPlayerActivity.class.getSimpleName();
+    static final String LOG_TAG = MusicPlayerActivity.class.getSimpleName();
 
     private MediaPlayer mediaPlayer;
-    private MediaPlayer.OnCompletionListener onCompletionListener = MediaPlayer::release;
+    private MediaPlayer.OnCompletionListener onCompletionListener = mp -> mp.release();
     private int index;
 
-    public MusicPlayerFragment() {}
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container
-            , @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.music_player_main, container, false);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.music_player_main);
 
-            }
-        });
-
-        Music music = getActivity().getIntent().getParcelableExtra("music");
+        Music music = getIntent().getParcelableExtra("music");
         Uri musicUri = music.getUri();
 
         if (musicUri != null) {
-            mediaPlayer = MediaPlayer.create(getContext(), music.getUri());
+            mediaPlayer = MediaPlayer.create(this, music.getUri());
             mediaPlayer.setOnCompletionListener(onCompletionListener);
         } else {
             mediaPlayer = null;
@@ -58,23 +45,19 @@ public class MusicPlayerFragment extends Fragment {
         int nextInt = getNextIndex(index, musicList);
         if (nextInt != -1) {
             mediaPlayer.setNextMediaPlayer(
-                    MediaPlayer.create(getContext(), musicList.get(nextInt).getUri()));
+                    MediaPlayer.create(this, musicList.get(nextInt).getUri()));
         }
-
-        return view;
     }
 
     @Override
-    public void onStop() {
+    protected void onStop() {
         super.onStop();
-        releaseMediaPlayer();
+        mediaPlayer.release();
     }
 
     public void playOrPause(View view) {
-        View rootView = getView().getRootView();
-
         if (mediaPlayer != null) {
-            ImageView imageView = rootView.findViewById(R.id.image_music_player_play_pause);
+            ImageView imageView = findViewById(R.id.image_music_player_play_pause);
 
             if (mediaPlayer.isPlaying()) {
                 imageView.setImageResource(R.drawable.play_button);
@@ -87,16 +70,14 @@ public class MusicPlayerFragment extends Fragment {
     }
 
     public void goToPrevious(View view) {
-        View rootView = getView().getRootView();
-
-        ((ImageView) rootView.findViewById(R.id.image_music_player_play_pause))
+        ((ImageView) findViewById(R.id.image_music_player_play_pause))
                 .setImageResource(R.drawable.play_button);
         index = getPreviousIndex(index, musicList);
         Uri musicUri = index == -1 ? null : musicList.get(index).getUri();
 
         if (musicUri != null) {
             mediaPlayer.release();
-            mediaPlayer = MediaPlayer.create(getContext(), musicUri);
+            mediaPlayer = MediaPlayer.create(this, musicUri);
             updateMusicPlayer(musicList.get(index));
 
             int nextIndex = getNextIndex(index, musicList);
@@ -104,22 +85,20 @@ public class MusicPlayerFragment extends Fragment {
 
             if (nextUri != null) {
                 mediaPlayer.setNextMediaPlayer(
-                        MediaPlayer.create(getContext(), nextUri));
+                        MediaPlayer.create(this, nextUri));
             }
         }
     }
 
     public void goToNext(View view) {
-        View rootView = getView().getRootView();
-
-        ((ImageView) rootView.findViewById(R.id.image_music_player_play_pause))
+        ((ImageView) findViewById(R.id.image_music_player_play_pause))
                 .setImageResource(R.drawable.play_button);
         index = getNextIndex(index, musicList);
         Uri musicUri = index == -1 ? null : musicList.get(index).getUri();
 
         if (musicUri != null) {
             mediaPlayer.release();
-            mediaPlayer = MediaPlayer.create(getContext(), musicUri);
+            mediaPlayer = MediaPlayer.create(this, musicUri);
             updateMusicPlayer(musicList.get(index));
 
             int nextIndex = getNextIndex(index, musicList);
@@ -127,25 +106,17 @@ public class MusicPlayerFragment extends Fragment {
 
             if (nextUri != null) {
                 mediaPlayer.setNextMediaPlayer(
-                        MediaPlayer.create(getContext(), nextUri));
+                        MediaPlayer.create(this, nextUri));
             }
         }
     }
 
-    private void releaseMediaPlayer() {
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
-    }
-
     private void updateMusicPlayer(Music music) {
-        View rootView = getView().getRootView();
         String artistAlbum = music.getArtist() + " - " + music.getAlbum();
 
-        TextView titleView = rootView.findViewById(R.id.text_music_player_title);
-        TextView artistAlbumView = rootView.findViewById(R.id.text_music_player_artist_album);
-        ImageView albumCoverView = rootView.findViewById(R.id.image_music_player_album_cover);
+        TextView titleView = findViewById(R.id.text_music_player_title);
+        TextView artistAlbumView = findViewById(R.id.text_music_player_artist_album);
+        ImageView albumCoverView = findViewById(R.id.image_music_player_album_cover);
 
         titleView.setText(music.getTitle());
         artistAlbumView.setText(artistAlbum);
