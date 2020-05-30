@@ -2,7 +2,10 @@ package com.example.musicplayer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.AudioManager;
+import android.media.session.MediaSession;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +25,22 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
     private MediaPlayer.OnCompletionListener onCompletionListener = mp -> mp.release();
+    private AudioManager audioManager;
+    private AudioManager.OnAudioFocusChangeListener onAudioFocusChangeListener =
+            new AudioManager.OnAudioFocusChangeListener() {
+                @Override
+                public void onAudioFocusChange(int focusChange) {
+                    if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT
+                            || focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
+                        mediaPlayer.pause();
+                        mediaPlayer.seekTo(0);
+                    } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+                        mediaPlayer.start();
+                    } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                        releaseMedia();
+                    }
+                }
+            };
     private int index;
 
     @Override
@@ -29,6 +48,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.music_player_main);
 
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         Music music = getIntent().getParcelableExtra("music");
         Uri musicUri = music.getUri();
 
@@ -41,6 +61,15 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         index = getIndexFromArray(musicUri, musicList);
         updateMusicPlayer(music);
+
+        releaseMedia();
+
+        int result = audioManager.requestAudioFocus(onAudioFocusChangeListener
+                , AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+
+        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+//            audioManager.registerMediaButtonEventReceiver();
+        }
 
         int nextInt = getNextIndex(index, musicList);
         if (nextInt != -1) {
@@ -108,6 +137,14 @@ public class MusicPlayerActivity extends AppCompatActivity {
                 mediaPlayer.setNextMediaPlayer(
                         MediaPlayer.create(this, nextUri));
             }
+        }
+    }
+
+    private void releaseMedia() {
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+            audioManager.abandonAudioFocus(onAudioFocusChangeListener);
         }
     }
 
