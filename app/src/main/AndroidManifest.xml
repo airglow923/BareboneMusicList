@@ -23,5 +23,6 @@
         <activity android:name=".MusicPlayerActivity"
             android:label="MusicPlayer">
         </activity>
+        <service android:name=".MediaPlayerService" />
     </application>
 </manifest>

@@ -100,6 +100,7 @@ public final class MusicLoader {
                         while (genresCursor.moveToNext()) {
                             genre = genresCursor.getString(genresColumn);
                         }
+                        genresCursor.close();
                     }
                 }
 
