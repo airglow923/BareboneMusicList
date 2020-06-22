@@ -11,6 +11,9 @@ import java.io.File;
 
 public class Music implements Comparable<Music>, Parcelable {
 
+    static final String TAG = Music.class.getSimpleName();
+    static final String LOG_TAG = Music.class.getSimpleName();
+
     // referenced id3v2 format
     private Uri uri;
     private String title;

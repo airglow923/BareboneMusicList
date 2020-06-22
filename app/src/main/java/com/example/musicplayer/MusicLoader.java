@@ -17,6 +17,9 @@ import static com.example.musicplayer.AndroidVersion.*;
 
 public final class MusicLoader {
 
+    static final String TAG = MusicLoader.class.getSimpleName();
+    static final String LOG_TAG = MusicLoader.class.getSimpleName();
+
     private static final int ALBUM_ART_WIDTH = 500;
     private static final int ALBUM_ART_HEIGHT = 500;
     public static List<Music> musicList = new ArrayList<Music>();
