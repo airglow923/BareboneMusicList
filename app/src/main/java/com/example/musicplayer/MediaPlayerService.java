@@ -495,7 +495,8 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
                 .setStyle(new Notification.MediaStyle()
                         .setMediaSession(mediaSession.getSessionToken())
                         .setShowActionsInCompactView(0, 1, 2))
-                .setColor(getResources().getColor(R.color.colorPrimary))
+                .setColor(getResources().getColor(R.color.colorPrimary
+                        , getBaseContext().getTheme()))
 //                .setLargeIcon()
 //                .setSmallIcon()
                 .setContentText(activeMusic.getArtist())
