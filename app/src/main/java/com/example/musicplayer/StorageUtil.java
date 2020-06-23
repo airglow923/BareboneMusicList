@@ -2,14 +2,19 @@ package com.example.musicplayer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
 public class StorageUtil {
+
+    static final String TAG = StorageUtil.class.getSimpleName();
+    static final String LOG_TAG = StorageUtil.class.getSimpleName();
 
     private final String STORAGE = " com.example.musicplayer.STORAGE";
     private SharedPreferences preferences;
@@ -23,7 +28,9 @@ public class StorageUtil {
         preferences = context.getSharedPreferences(STORAGE, Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = preferences.edit();
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Uri.class, new UriSerializer())
+                .create();
         String json = gson.toJson(arrayList);
         editor.putString("audioArrayList", json);
         editor.apply();
@@ -31,10 +38,11 @@ public class StorageUtil {
 
     public List<Music> loadAudio() {
         preferences = context.getSharedPreferences(STORAGE, Context.MODE_PRIVATE);
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Uri.class, new UriDeserializer())
+                .create();
         String json = preferences.getString("audioArrayList", null);
-        Type type = new TypeToken<List<Music>>() {
-        }.getType();
+        Type type = new TypeToken<List<Music>>() {}.getType();
         return gson.fromJson(json, type);
     }
 
@@ -47,7 +55,7 @@ public class StorageUtil {
 
     public int loadAudioIndex() {
         preferences = context.getSharedPreferences(STORAGE, Context.MODE_PRIVATE);
-        return preferences.getInt("audioIndex", -1);//return -1 if no data found
+        return preferences.getInt("audioIndex", -1);    //return -1 if no data found
     }
 
     public void clearCachedAudioPlaylist() {

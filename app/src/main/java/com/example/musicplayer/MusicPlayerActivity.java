@@ -49,10 +49,11 @@ public class MusicPlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.music_player_main);
 
+        startService(new Intent(this, MediaPlayerService.class));
+        playAudio(0);
         Music music = getIntent().getParcelableExtra("music");
         Uri musicUri = music.getUri();
         updateMusicPlayer(music);
-        playAudio();
     }
 
     @Override
@@ -93,45 +94,45 @@ public class MusicPlayerActivity extends AppCompatActivity {
     }
 
     public void goToPrevious(View view) {
-        ((ImageView) findViewById(R.id.image_music_player_play_pause))
-                .setImageResource(R.drawable.play_button);
-        index = getPreviousIndex(index, musicList);
-        Uri musicUri = index == -1 ? null : musicList.get(index).getUri();
-
-        if (musicUri != null) {
-            mediaPlayer.release();
-            mediaPlayer = MediaPlayer.create(this, musicUri);
-            updateMusicPlayer(musicList.get(index));
-
-            int nextIndex = getNextIndex(index, musicList);
-            Uri nextUri = index == -1 ? null : musicList.get(index).getUri();
-
-            if (nextUri != null) {
-                mediaPlayer.setNextMediaPlayer(
-                        MediaPlayer.create(this, nextUri));
-            }
-        }
+//        ((ImageView) findViewById(R.id.image_music_player_play_pause))
+//                .setImageResource(R.drawable.play_button);
+//        index = getPreviousIndex(index, musicList);
+//        Uri musicUri = index == -1 ? null : musicList.get(index).getUri();
+//
+//        if (musicUri != null) {
+//            mediaPlayer.release();
+//            mediaPlayer = MediaPlayer.create(this, musicUri);
+//            updateMusicPlayer(musicList.get(index));
+//
+//            int nextIndex = getNextIndex(index, musicList);
+//            Uri nextUri = index == -1 ? null : musicList.get(index).getUri();
+//
+//            if (nextUri != null) {
+//                mediaPlayer.setNextMediaPlayer(
+//                        MediaPlayer.create(this, nextUri));
+//            }
+//        }
     }
 
     public void goToNext(View view) {
-        ((ImageView) findViewById(R.id.image_music_player_play_pause))
-                .setImageResource(R.drawable.play_button);
-        index = getNextIndex(index, musicList);
-        Uri musicUri = index == -1 ? null : musicList.get(index).getUri();
-
-        if (musicUri != null) {
-            mediaPlayer.release();
-            mediaPlayer = MediaPlayer.create(this, musicUri);
-            updateMusicPlayer(musicList.get(index));
-
-            int nextIndex = getNextIndex(index, musicList);
-            Uri nextUri = index == -1 ? null : musicList.get(index).getUri();
-
-            if (nextUri != null) {
-                mediaPlayer.setNextMediaPlayer(
-                        MediaPlayer.create(this, nextUri));
-            }
-        }
+//        ((ImageView) findViewById(R.id.image_music_player_play_pause))
+//                .setImageResource(R.drawable.play_button);
+//        index = getNextIndex(index, musicList);
+//        Uri musicUri = index == -1 ? null : musicList.get(index).getUri();
+//
+//        if (musicUri != null) {
+//            mediaPlayer.release();
+//            mediaPlayer = MediaPlayer.create(this, musicUri);
+//            updateMusicPlayer(musicList.get(index));
+//
+//            int nextIndex = getNextIndex(index, musicList);
+//            Uri nextUri = index == -1 ? null : musicList.get(index).getUri();
+//
+//            if (nextUri != null) {
+//                mediaPlayer.setNextMediaPlayer(
+//                        MediaPlayer.create(this, nextUri));
+//            }
+//        }
     }
 
     private void updateMusicPlayer(Music music) {
@@ -158,6 +159,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             storageUtil.storeAudioIndex(index);
 
             Intent playerIntent = new Intent(this, MediaPlayerService.class);
+            playerIntent.putExtra("music", musicList.get(index));
             startService(playerIntent);
             bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
         } else {

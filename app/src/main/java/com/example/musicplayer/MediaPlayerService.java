@@ -22,8 +22,6 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.support.v4.media.session.MediaControllerCompat;
-import android.support.v4.media.session.MediaSessionCompat;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -81,7 +79,6 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
 
     private final IBinder iBinder = new LocalBinder();
     private MediaPlayer mediaPlayer;
-    private Uri musicUri;
     private int resumePosition;
     private AudioManager audioManager;
 
@@ -126,11 +123,6 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     private MediaController.TransportControls transportControls;
 
     private static final int NOTIFICATION_ID = 777;
-
-    public MediaPlayerService(Uri uri) {
-        musicUri = uri;
-        mediaPlayer = MediaPlayer.create(this, uri);
-    }
 
     @Override
     public void onCreate() {
@@ -242,20 +234,6 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-//        try {
-//            musicUri = Uri.parse(intent.getExtras().getString("musicUri"));
-//        } catch (NullPointerException e) {
-//            stopSelf();
-//        }
-//
-//        if (!requestAudioFocus()) {
-//            stopSelf();
-//        }
-//
-//        if (musicUri != null) {
-//            initMediaPlayer();
-//        }
-
         try {
             StorageUtil storage = new StorageUtil(getApplicationContext());
             musicList = storage.loadAudio();
@@ -550,8 +528,9 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     }
 
     private void handleIncomingAction(Intent playbackAction) {
-        if (playbackAction == null || playbackAction.getAction() == null)
+        if (playbackAction == null || playbackAction.getAction() == null) {
             return;
+        }
 
         String actionString = playbackAction.getAction();
 
